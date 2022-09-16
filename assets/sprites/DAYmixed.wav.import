@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/DAYmixed.wav-3ac3c96bfaa7abb0de2b3f641caa9e7d.sample"
+
+[deps]
+
+source_file="res://assets/sprites/DAYmixed.wav"
+dest_files=[ "res://.import/DAYmixed.wav-3ac3c96bfaa7abb0de2b3f641caa9e7d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

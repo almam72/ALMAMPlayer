@@ -1,0 +1,102 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "RefCounted",
+"class": &"AudioLoader",
+"language": &"GDScript",
+"path": "res://scripts/GDScriptAudioImport.gd"
+}]
+_global_script_class_icons={
+"AudioLoader": ""
+}
+
+[application]
+
+config/name="ALMAMPlayer"
+run/main_scene="res://scenes/main_interface.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="ALMAMPlayer"
+config/features=PackedStringArray("4.0")
+boot_splash/image="res://assets/sprites/splash.png"
+boot_splash/bg_color=Color(0.886275, 0.862745, 0.607843, 1)
+config/icon="res://icon.png"
+
+[audio]
+
+enable_audio_input=true
+
+[autoload]
+
+GlobalVariables="*res://scripts/global_variables.gd"
+Colors="*res://scenes/colors.tscn"
+
+[debug]
+
+file_logging/enable_file_logging=true
+settings/fps/force_fps=60
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="viewport"
+
+[editor]
+
+movie_writer/mjpeg_quality=0.85
+movie_writer/movie_file="C:/Godot/Projects/Almidi/video/test.avi"
+movie_writer/disable_vsync=true
+
+[editor_plugins]
+
+enabled=PackedStringArray()
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": true,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
+
+[input]
+
+fullscreen={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194342,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

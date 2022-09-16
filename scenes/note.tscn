@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://btg88hugqsymd"]
+
+[ext_resource type="Script" path="res://scripts/note.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://d4n0awb1fncik" path="res://scenes/note_effect.tscn" id="3_3s1ho"]
+
+[sub_resource type="ShaderMaterial" id="7"]
+
+[sub_resource type="Animation" id="4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="5"]
+resource_name = "fade"
+length = 5.0
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.494),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.941176, 0.941176, 0.941176, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c7d2o"]
+_data = {
+"RESET": SubResource("4"),
+"fade": SubResource("5")
+}
+
+[node name="Note" type="Node2D"]
+self_modulate = Color(0.988235, 0.964706, 0.94902, 1)
+material = SubResource("7")
+z_index = 1787
+script = ExtResource("1")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DurationTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_c7d2o")
+}
+
+[node name="NoteAnchor" type="Node2D" parent="."]
+
+[node name="TextureRect" type="NinePatchRect" parent="NoteAnchor"]
+texture_filter = 2
+offset_top = -9.0
+offset_right = 143.0
+offset_bottom = 9.0
+patch_margin_left = 12
+patch_margin_right = 12
+axis_stretch_horizontal = 2
+
+[node name="Staccato" type="TextureRect" parent="NoteAnchor/TextureRect"]
+offset_top = 9.0
+offset_right = 40.0
+offset_bottom = 49.0
+stretch_mode = 5
+
+[node name="Node" type="Node" parent="."]
+
+[node name="NoteEffect" parent="Node" instance=ExtResource("3_3s1ho")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="DurationTimer" to="." method="_on_DurationTimer_timeout"]

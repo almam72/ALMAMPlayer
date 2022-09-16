@@ -1,0 +1,142 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1q57iuoqo7ru"]
+
+[ext_resource type="Script" path="res://scripts/track_color.gd" id="1_20gnx"]
+[ext_resource type="Texture2D" uid="uid://bytkrlsrpicjr" path="res://assets/sprites/note_effect_texture.png" id="2_fjert"]
+[ext_resource type="Texture2D" uid="uid://dd3ddrigclglg" path="res://assets/sprites/note00.png" id="2_h8355"]
+
+[node name="TrackColor" type="VBoxContainer"]
+offset_right = 256.0
+offset_bottom = 53.0
+size_flags_horizontal = 10
+theme_override_constants/separation = 27
+script = ExtResource("1_20gnx")
+
+[node name="Container" type="HBoxContainer" parent="."]
+offset_right = 797.0
+offset_bottom = 64.0
+
+[node name="Label" type="Label" parent="Container"]
+offset_top = 5.0
+offset_right = 105.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Track "
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Container"]
+offset_left = 109.0
+offset_right = 176.0
+offset_bottom = 64.0
+text = "hehehe"
+edit_alpha = false
+
+[node name="SpinBox" type="SpinBox" parent="Container"]
+modulate = Color(0, 0, 0, 1)
+offset_left = 180.0
+offset_right = 263.0
+offset_bottom = 64.0
+min_value = 0.25
+max_value = 2.0
+step = 0.01
+value = 0.25
+suffix = "x"
+
+[node name="NoteTextureButton" type="Button" parent="Container"]
+offset_left = 267.0
+offset_right = 427.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 24
+text = "Note Texture"
+
+[node name="NoteEffectButton" type="Button" parent="Container"]
+offset_left = 431.0
+offset_right = 599.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 24
+text = "Effect Texture"
+
+[node name="FileDialog" type="FileDialog" parent="Container"]
+title = "Open a File"
+position = Vector2i(360, 203)
+size = Vector2i(1200, 675)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png")
+
+[node name="FileDialog2" type="FileDialog" parent="Container"]
+title = "Open a File"
+position = Vector2i(360, 203)
+size = Vector2i(1200, 675)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png")
+
+[node name="NoteEffectPreview" type="TextureRect" parent="Container"]
+custom_minimum_size = Vector2i(64, 64)
+offset_left = 603.0
+offset_right = 667.0
+offset_bottom = 64.0
+texture = ExtResource("2_fjert")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="CheckBox" type="CheckBox" parent="Container"]
+offset_left = 671.0
+offset_right = 797.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Staccato"
+alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+offset_top = 91.0
+offset_right = 797.0
+offset_bottom = 107.0
+size_flags_vertical = 3
+
+[node name="LeftMarginSlider" type="HSlider" parent="HBoxContainer2"]
+offset_right = 350.0
+offset_bottom = 16.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+value = 11.0
+scrollable = false
+
+[node name="TextureRect" type="NinePatchRect" parent="HBoxContainer2"]
+offset_left = 354.0
+offset_right = 442.0
+offset_bottom = 16.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+texture = ExtResource("2_h8355")
+patch_margin_left = 11
+patch_margin_right = 11
+axis_stretch_horizontal = 2
+
+[node name="RightMarginSlider" type="HSlider" parent="HBoxContainer2"]
+offset_left = 446.0
+offset_right = 797.0
+offset_bottom = 16.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+value = 11.0
+scrollable = false
+
+[connection signal="color_changed" from="Container/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
+[connection signal="value_changed" from="Container/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="Container/NoteTextureButton" to="." method="_on_note_texture_button_pressed"]
+[connection signal="pressed" from="Container/NoteEffectButton" to="." method="_on_note_effect_button_pressed"]
+[connection signal="file_selected" from="Container/FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="file_selected" from="Container/FileDialog2" to="." method="_on_file_dialog_2_file_selected"]
+[connection signal="toggled" from="Container/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="value_changed" from="HBoxContainer2/LeftMarginSlider" to="." method="_on_left_margin_slider_value_changed"]
+[connection signal="value_changed" from="HBoxContainer2/RightMarginSlider" to="." method="_on_right_margin_slider_value_changed"]

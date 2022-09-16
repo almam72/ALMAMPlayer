@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://ci16q8t2vxbii"
+path="res://.godot/imported/black_image.png-5d79ab87df0258906c764c67c7898759.image"
+
+[deps]
+
+source_file="res://assets/sprites/black_image.png"
+dest_files=["res://.godot/imported/black_image.png-5d79ab87df0258906c764c67c7898759.image"]
+
+[params]
+

@@ -1,0 +1,46 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cisthueei7s8l"]
+
+[sub_resource type="Shader" id="3"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform float soft_radius = 3.0;
+uniform float radius = 5.0;
+uniform float soft_spread = 5.0;
+uniform vec4 modulate: hint_color;
+
+void fragment() {
+	vec2 ps = TEXTURE_PIXEL_SIZE;
+
+	vec4 shadow = texture(TEXTURE, UV + vec2(-radius * 0.3, -radius) * ps);
+	
+	shadow += texture(TEXTURE, UV + vec2(-radius * 0.3, 0.0) * ps);
+	shadow += texture(TEXTURE, UV + vec2(0.0, -radius) * ps);
+	shadow += texture(TEXTURE, UV + vec2(radius * 0.3, -radius) * ps);
+	
+	shadow /= 7.0;
+	
+	vec4 soft_shadow = textureLod(TEXTURE, UV + vec2(-soft_spread , -soft_spread) * ps, soft_radius);
+//	soft_shadow += textureLod(TEXTURE, UV + vec2(-soft_spread, soft_spread) * ps, soft_radius);
+//	soft_shadow += textureLod(TEXTURE, UV + vec2(-soft_spread, 0.0) * ps, soft_radius);
+//	soft_shadow += textureLod(TEXTURE, UV + vec2(0.0, soft_spread) * ps, soft_radius);
+	soft_shadow += textureLod(TEXTURE, UV + vec2(soft_spread , 0.0) * ps, soft_radius);
+	soft_shadow += textureLod(TEXTURE, UV + vec2(0.0, -soft_spread) * ps, soft_radius);
+	soft_shadow += textureLod(TEXTURE, UV + vec2(soft_spread, -soft_spread) * ps, soft_radius);
+//	soft_shadow += textureLod(TEXTURE, UV + vec2(soft_spread, soft_spread) * ps, soft_radius);
+	soft_shadow /= 20.0;
+	shadow += soft_shadow;
+//	shadow /= 7.0;
+	
+	shadow *= modulate;
+
+//	shadow += textureLod(TEXTURE, UV, 3.0);
+	
+	
+	//	COLOR = mix(shadow, col, col.a);
+	COLOR = shadow;
+//	textureLod(s, )
+}"
+
+[resource]
+shader = SubResource("3")
