@@ -1,0 +1,286 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtchonqweyeh"]
+
+[ext_resource type="PackedScene" uid="uid://bl4c1mkeux1at" path="res://ui/OctaveKeyboard.tscn" id="1"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends Control
+
+const MidiPlayer = preload( \"res://addons/midi/MidiPlayer.gd\" )
+const Utility = preload( \"res://addons/midi/Utility.gd\" )
+
+var channel:MidiPlayer.GodotMIDIPlayerChannelStatus = null
+var midi_player:MidiPlayer = null
+var keys:Array = []
+var midi_player_change:bool = false
+
+func _ready( ):
+	for keyboard in $Keyboards.get_children( ):
+		for k in keyboard.get_node( \"Keys\" ).get_children( ):
+			self.keys.append( k )
+
+func _process( _delta:float ):
+	if self.channel == null: return
+
+	# Channel Number
+	$Channel.text = \"%02d\" % self.channel.number
+
+	# Program Name
+	$Program.text = \"%03d\\n%s\" % [self.channel.program, Utility.program_names[self.channel.program]]
+
+	# Update controls
+	self.midi_player_change = true
+	$Controls/First/Volume.value = self.channel.volume
+	$Controls/First/Expression.value = self.channel.expression
+	$Controls/First/Reverb.value = self.channel.reverb
+	$Controls/First/Chorus.value = self.channel.chorus
+	$Controls/Second/Pan.value = self.channel.pan
+	$Controls/Second/PitchBend.value = self.channel.pitch_bend
+	$Controls/Second/PitchBendSensitivity.value = self.channel.rpn.pitch_bend_sensitivity
+	$Controls/Second/Modulation.value = self.channel.modulation
+	$Hold1.button_pressed = self.channel.hold
+	self.midi_player_change = false
+
+	# Chord
+	var analyse_result = Utility.get_chord_and_scale( channel.note_on.keys( ) )
+	if analyse_result != null:
+		$Chord.text = analyse_result.string
+	else:
+		$Chord.text = \"\"
+
+	# Key display
+	for key in self.keys: key.visible = false
+	for note in self.channel.note_on.keys( ):
+		if note != null:
+			self.keys[note].visible = true
+
+func _on_Channel_toggled( button_pressed:bool ):
+	if self.midi_player_change: return
+	self.channel.mute = button_pressed
+
+func _on_Channel_gui_input( event:InputEvent ):
+	if self.midi_player_change: return
+	if not ( event is InputEventMouseButton ): return
+
+	var mouse_event:InputEventMouseButton = event
+	if mouse_event.button_index == MOUSE_BUTTON_RIGHT and mouse_event.doubleclick:
+		for check in self.get_tree( ).get_nodes_in_group( \"channel-switch\" ):
+			if check != self:
+				check.button_pressed = true
+		$Channel.button_pressed = false
+
+func _on_Volume_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.volume = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_Expression_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.expression = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_Reverb_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.reverb = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_Chorus_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.chorus = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_Pan_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.pan = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_PitchBend_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.pitch_bend = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_PitchBendSensitivity_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.rpn.pitch_bend_sensitivity = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_Modulation_value_changed( value:float ):
+	if self.midi_player_change: return
+	self.channel.modulation = value
+	self.midi_player.update_channel_status( self.channel )
+
+func _on_Hold1_toggled( button_pressed:bool ):
+	if self.midi_player_change: return
+	self.channel.hold = button_pressed
+"
+
+[node name="ChannelIndicator" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = SubResource("1")
+
+[node name="Channel" type="CheckBox" parent="." groups=["channel-switch"]]
+offset_left = 4.0
+offset_top = 3.0
+offset_right = 50.0
+offset_bottom = 27.0
+text = "01"
+
+[node name="Program" type="Label" parent="."]
+offset_left = 52.0
+offset_top = 1.0
+offset_right = 179.0
+offset_bottom = 28.0
+text = "Program #"
+
+[node name="Controls" type="VBoxContainer" parent="."]
+offset_left = 184.0
+offset_top = 2.0
+offset_right = 385.0
+offset_bottom = 30.0
+
+[node name="First" type="HBoxContainer" parent="Controls"]
+offset_right = 201.0
+offset_bottom = 8.0
+
+[node name="Volume" type="HScrollBar" parent="Controls/First"]
+offset_right = 47.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+
+[node name="Expression" type="HScrollBar" parent="Controls/First"]
+offset_left = 51.0
+offset_right = 98.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+
+[node name="Reverb" type="HScrollBar" parent="Controls/First"]
+offset_left = 102.0
+offset_right = 149.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+
+[node name="Chorus" type="HScrollBar" parent="Controls/First"]
+offset_left = 153.0
+offset_right = 201.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+
+[node name="Second" type="HBoxContainer" parent="Controls"]
+offset_top = 12.0
+offset_right = 201.0
+offset_bottom = 20.0
+
+[node name="Pan" type="HScrollBar" parent="Controls/Second"]
+offset_right = 47.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+max_value = 1.0
+step = 0.01
+
+[node name="PitchBend" type="HScrollBar" parent="Controls/Second"]
+offset_left = 51.0
+offset_right = 98.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = -1.0
+max_value = 1.0
+step = 0.01
+
+[node name="PitchBendSensitivity" type="HScrollBar" parent="Controls/Second"]
+offset_left = 102.0
+offset_right = 149.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = 2.0
+max_value = 24.0
+step = 1.0
+value = 2.0
+
+[node name="Modulation" type="HScrollBar" parent="Controls/Second"]
+offset_left = 153.0
+offset_right = 201.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+max_value = 1.0
+step = 0.01
+
+[node name="Hold1" type="CheckBox" parent="."]
+offset_left = 387.626
+offset_top = 2.93335
+offset_right = 411.626
+offset_bottom = 26.9333
+
+[node name="Chord" type="Label" parent="."]
+offset_left = 414.709
+offset_top = 7.97534
+offset_right = 473.709
+offset_bottom = 21.9753
+text = "Chord"
+
+[node name="Keyboards" type="Node2D" parent="."]
+position = Vector2(480, 4)
+
+[node name="0" parent="Keyboards" instance=ExtResource("1")]
+
+[node name="1" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(49, 0)
+
+[node name="2" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(98, 0)
+
+[node name="3" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(147, 0)
+
+[node name="4" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(196, 0)
+
+[node name="5" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(245, 0)
+
+[node name="6" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(294, 0)
+
+[node name="7" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(343, 0)
+
+[node name="8" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(392, 0)
+
+[node name="9" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(441, 0)
+
+[node name="10" parent="Keyboards" instance=ExtResource("1")]
+position = Vector2(490, 0)
+
+[node name="Splitter" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 1024, 0)
+width = 1.0
+default_color = Color(0.505882, 0.517647, 0.619608, 1)
+
+[connection signal="gui_input" from="Channel" to="." method="_on_Channel_gui_input"]
+[connection signal="toggled" from="Channel" to="." method="_on_Channel_toggled"]
+[connection signal="value_changed" from="Controls/First/Volume" to="." method="_on_Volume_value_changed"]
+[connection signal="value_changed" from="Controls/First/Expression" to="." method="_on_Expression_value_changed"]
+[connection signal="value_changed" from="Controls/First/Reverb" to="." method="_on_Reverb_value_changed"]
+[connection signal="value_changed" from="Controls/First/Chorus" to="." method="_on_Chorus_value_changed"]
+[connection signal="value_changed" from="Controls/Second/Pan" to="." method="_on_Pan_value_changed"]
+[connection signal="value_changed" from="Controls/Second/PitchBend" to="." method="_on_PitchBend_value_changed"]
+[connection signal="value_changed" from="Controls/Second/PitchBendSensitivity" to="." method="_on_PitchBendSensitivity_value_changed"]
+[connection signal="value_changed" from="Controls/Second/Modulation" to="." method="_on_Modulation_value_changed"]
+[connection signal="toggled" from="Hold1" to="." method="_on_Hold1_toggled"]

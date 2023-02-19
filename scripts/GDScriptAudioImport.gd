@@ -51,12 +51,12 @@ func e():
 	print("ok")
 
 func loadfile(filepath):
-	var file = File.new()
-	var err = file.open(filepath, File.READ)
-	if err != OK:
-		report_errors(err, filepath)
-		file.close()
-		return AudioStreamWAV.new()
+#	var file = File.new()
+	var file = FileAccess.open(filepath, FileAccess.READ)
+#	if err != OK:
+#		report_errors(err, filepath)
+#		file.close()
+#	return AudioStreamWAV.new()
 
 	var bytes = file.get_buffer(file.get_length())
 

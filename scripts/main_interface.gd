@@ -18,6 +18,17 @@ var track_color_scene = preload("res://scenes/TrackColor.tscn")
 
 var notes = {}
 
+
+const MidiPlayer = preload( "res://addons/midi/MidiPlayer.gd" )
+const Utility = preload( "res://addons/midi/Utility.gd" )
+
+var channel:MidiPlayer.GodotMIDIPlayerChannelStatus = null
+var midi_player:MidiPlayer = null
+var keys:Array = []
+var midi_player_change:bool = false
+
+var smf_data:SMF.SMFData = null
+
 func _ready():
 #	if not GlobalVariables.colors.has(str(track.number)):
 #		load_json()
@@ -31,13 +42,16 @@ func _ready():
 	load_image(GlobalVariables.background_path)
 	MP3.text = GlobalVariables.sound_path + " loaded"	
 	if GlobalVariables.json_path != null:		
-		load_json(GlobalVariables.json_path)
+		load_midi(GlobalVariables.json_path)
 #	load_json("")
 #	get_tree().files_dropped.connect(self._on_files_dropped())
 	get_tree().get_root().connect("files_dropped", self._on_files_dropped)
 
 func _on_files_dropped(files):
 	for file in files:
+		if file.right(4) == ".mid":
+			load_midi(file)
+			
 		if file.right(4) == ".mp3" || file.right(4) == ".wav":
 			load_sound(file)
 		if file.right(4) == ".png" || file.right(4) == ".jpg":
@@ -58,9 +72,90 @@ func _on_files_dropped(files):
 #	$AudioStreamPlayer.set_stream(audio_loader.loadfile(file_path))
 #	$AudioStreamPlayer.play()
 
+func load_midi(midi_path):
+	smf_data = null
+	if self.smf_data == null:
+		var smf_reader: = SMF.new( )
+		var result: = smf_reader.read_file(midi_path)
+		if result.error == OK:
+			self.smf_data = result.data
+#			self.playing = true
+		else:
+			return
+	
+	GlobalVariables.json_path = midi_path
+	
+	for track in color_container.get_children():
+		track.free()
+#	bpm = midi_json["header"]["tempos"][0]["bpm"]
+	var track_number = 0
+	track_number = 0
+	
+	for track in smf_data.tracks:
+		if track.events.size() == 0:
+			continue
+		var track_color_instance = track_color_scene.instantiate()
+		color_container.add_child(track_color_instance)
+		track_number += 1
+	track_number = 0
+	var number_of_tracks = color_container.get_child_count()
+	for track in color_container.get_children():
+		track.text = "Track " + str(track_number) + " " 
+#		print((1.75 / number_of_tracks * track_number) + 0.25)
+		track.number = track_number
+		if not GlobalVariables.colors.has(str(track.number)):
+			track.color = Color.from_hsv(1.0 / number_of_tracks * track_number, 0.62 + float((track_number+1)) / float((number_of_tracks+1) * 4), 0.92 - float((track_number+1)) / float((number_of_tracks+1) * 4), 1.0)
+			track.parallax = (1.2 / number_of_tracks * (number_of_tracks - track_number)) + 0.6
+			track.note_texture = "res://assets/sprites/note_texture.png"
+			track.note_effect_texture = "res://assets/sprites/note_effect_texture.png"
+			GlobalVariables.note_texture_margins[str(track_number)] = Vector2(12,12)
+			track.note_margins = Vector2(12,12)
+			GlobalVariables.staccato[str(track_number)] = false
+			if track_number == 4 || track_number == 1:
+				track.note_texture = "res://assets/sprites/note_staccato_image.png"
+				GlobalVariables.staccato[str(track_number)] = true
+				track.staccato = true
+		else:
+			track.color = GlobalVariables.colors[str(track_number)]
+			track.parallax = GlobalVariables.parallax[str(track_number)]
+			track.note_texture = GlobalVariables.note_texture[str(track_number)]
+			track.note_effect_texture = GlobalVariables.note_effect_texture[str(track_number)]
+			track.note_margins = GlobalVariables.note_texture_margins[str(track_number)]
+			track.staccato = GlobalVariables.staccato[str(track_number)]
+		track.apply_note_texture()
+		track.apply_color()
+		track.apply_parallax()
+		track.apply_note_effect_texture()
+		track.apply_note_margins()
+		track.apply_staccato()
+		track_number += 1
+	track_number = 0
+	
+	
+	for track in smf_data.tracks:
+		if track.events.size() == 0:
+			continue
+#			print(track)
+		for note in track.events:
+			add_note_to_array(note, track_number)
+		track_number += 1
+	track_number = 0
+	var note_min = 128
+	var note_max = 0
+	for note in notes:
+		if notes[note][0][0] > note_max:
+			note_max = notes[note][0][0]
+		if notes[note][0][0] < note_min:
+			note_min = notes[note][0][0]
+	var note_range = note_max - note_min
+	GlobalVariables.note_range = note_range
+	GlobalVariables.bottom_note = note_min
+	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
+	GlobalVariables.save_settings()
+
 func load_json(json_path):
 	var file = File.new()
-	file.open(json_path, file.READ)
+	file.open(json_path, file.FileOpts.READ)
 	var text = file.get_as_text()
 	var json_var = JSON.new()
 	var midi_json = json_var.parse(text)
@@ -138,6 +233,7 @@ func load_json(json_path):
 	GlobalVariables.save_settings()
 	
 func add_note_to_array(note, track_number):
+	return
 	var time = str(note["time"] + 1.3)
 	
 	if not notes.has(time):

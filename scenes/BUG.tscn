@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c6ysj7iqgvwi8"]
 
 [ext_resource type="Texture2D" uid="uid://df6uqumd68lfc" path="res://assets/sprites/black.png" id="2_6yw2j"]
-[ext_resource type="AudioStream" uid="uid://bmf8tdrogitqn" path="res://assets/sprites/demo.mp3" id="3_0ld63"]
+[ext_resource type="AudioStream" uid="uid://boyukfkauvaus" path="res://assets/sprites/demo.mp3" id="3_0ld63"]
 [ext_resource type="Script" path="res://scripts/beat_detection.gd" id="13"]
 
 [sub_resource type="Animation" id="25"]
@@ -21,8 +21,6 @@ _data = {
 script = ExtResource("13")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-rotating = true
-current = true
 
 [node name="BackgroundImage" type="TextureRect" parent="Camera2D"]
 anchors_preset = 8
@@ -72,7 +70,6 @@ position = Vector2(0, 540)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WaveAnchor/NoteHolder"]
 autoplay = "RESET"
-playback_speed = 0.5
 libraries = {
 "": SubResource("AnimationLibrary_ao02s")
 }

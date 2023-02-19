@@ -1,0 +1,71 @@
+[gd_scene load_steps=14 format=3 uid="uid://bl4c1mkeux1at"]
+
+[ext_resource type="Texture2D" uid="uid://druvwiob4s7xl" path="res://ui/keyboard.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://bcf5562twuvj7" path="res://ui/0.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://cb4l4u8m3jer4" path="res://ui/1.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://xgqb3rb74pgl" path="res://ui/2.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cnj43he4em1wh" path="res://ui/3.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://bss0q7jp5gsj0" path="res://ui/4.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://bgkh6lmeqicjt" path="res://ui/5.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://1wmifkguwrnv" path="res://ui/6.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://bc0w0vhgjjvio" path="res://ui/7.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://d1tt1l06fjd0w" path="res://ui/8.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://kf17bkbltllb" path="res://ui/9.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://dru3u6ian6n2d" path="res://ui/10.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://cka8y2lhd3057" path="res://ui/11.png" id="13"]
+
+[node name="OctaveKeyboard" type="Node2D"]
+
+[node name="BaseKeyboard" type="Sprite2D" parent="."]
+texture = ExtResource("1")
+offset = Vector2(32, 16)
+
+[node name="Keys" type="Node2D" parent="."]
+
+[node name="0" type="Sprite2D" parent="Keys"]
+texture = ExtResource("2")
+offset = Vector2(32, 16)
+
+[node name="1" type="Sprite2D" parent="Keys"]
+texture = ExtResource("3")
+offset = Vector2(32, 16)
+
+[node name="2" type="Sprite2D" parent="Keys"]
+texture = ExtResource("4")
+offset = Vector2(32, 16)
+
+[node name="3" type="Sprite2D" parent="Keys"]
+texture = ExtResource("5")
+offset = Vector2(32, 16)
+
+[node name="4" type="Sprite2D" parent="Keys"]
+texture = ExtResource("6")
+offset = Vector2(32, 16)
+
+[node name="5" type="Sprite2D" parent="Keys"]
+texture = ExtResource("7")
+offset = Vector2(32, 16)
+
+[node name="6" type="Sprite2D" parent="Keys"]
+texture = ExtResource("8")
+offset = Vector2(32, 16)
+
+[node name="7" type="Sprite2D" parent="Keys"]
+texture = ExtResource("9")
+offset = Vector2(32, 16)
+
+[node name="8" type="Sprite2D" parent="Keys"]
+texture = ExtResource("10")
+offset = Vector2(32, 16)
+
+[node name="9" type="Sprite2D" parent="Keys"]
+texture = ExtResource("11")
+offset = Vector2(32, 16)
+
+[node name="10" type="Sprite2D" parent="Keys"]
+texture = ExtResource("12")
+offset = Vector2(32, 16)
+
+[node name="11" type="Sprite2D" parent="Keys"]
+texture = ExtResource("13")
+offset = Vector2(32, 16)

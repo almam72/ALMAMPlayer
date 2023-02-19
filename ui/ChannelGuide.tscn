@@ -1,0 +1,96 @@
+[gd_scene format=2]
+
+[node name="ChannelGuide" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 12.5562
+offset_top = 6.41055
+offset_right = 62.7878
+offset_bottom = 23.5562
+text = "Ch #"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 58.867
+offset_top = 4.94037
+offset_right = 124.867
+offset_bottom = 22.086
+text = "Program #"
+
+[node name="Label3" type="Label" parent="."]
+offset_left = 184.0
+offset_top = 3.41055
+offset_right = 221.02
+offset_bottom = 17.4106
+text = "Vol."
+
+[node name="Label7" type="Label" parent="."]
+offset_left = 184.735
+offset_top = 18.8475
+offset_right = 233.735
+offset_bottom = 32.8475
+text = "Pan"
+
+[node name="Label4" type="Label" parent="."]
+offset_left = 230.311
+offset_top = 3.41055
+offset_right = 267.33
+offset_bottom = 17.4106
+text = "Expr."
+
+[node name="Label8" type="Label" parent="."]
+offset_left = 231.046
+offset_top = 18.1124
+offset_right = 268.065
+offset_bottom = 32.1124
+text = "P.B."
+
+[node name="Label5" type="Label" parent="."]
+offset_left = 276.622
+offset_top = 2.67546
+offset_right = 320.622
+offset_bottom = 16.6755
+text = "Reverb"
+
+[node name="Label10" type="Label" parent="."]
+offset_left = 277.357
+offset_top = 18.1124
+offset_right = 328.357
+offset_bottom = 32.1124
+text = "PBSens."
+
+[node name="Label6" type="Label" parent="."]
+offset_left = 335.429
+offset_top = 3.41055
+offset_right = 379.429
+offset_bottom = 17.4106
+text = "Chorus"
+
+[node name="Label9" type="Label" parent="."]
+offset_left = 336.164
+offset_top = 18.8475
+offset_right = 380.164
+offset_bottom = 32.8475
+text = "Mod."
+
+[node name="Label11" type="Label" parent="."]
+offset_left = 383.945
+offset_top = 12.2317
+offset_right = 427.945
+offset_bottom = 26.2317
+text = "Hold1"
+
+[node name="Label12" type="Label" parent="."]
+offset_left = 430.991
+offset_top = 11.4966
+offset_right = 474.991
+offset_bottom = 25.4966
+text = "Chord"
+
+[node name="Label13" type="Label" parent="."]
+offset_left = 698.564
+offset_top = 12.2317
+offset_right = 818.564
+offset_bottom = 26.2317
+text = "Keyboard Indicator"

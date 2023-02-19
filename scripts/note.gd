@@ -77,7 +77,6 @@ func _ready():
 	z_index += parallax 
 	texture_rext.modulate = color
 #	$ColorRect.modulate = color
-	@warning_ignore(integer_division)
 	texture_rext.modulate = Color(texture_rext.modulate.r + note_number / 600, texture_rext.modulate.g + note_number / 600, texture_rext.modulate.b + note_number / 600, 1)
 #	$ColorRect.modulate = Color($ColorRect.modulate.r + 0.2, $ColorRect.modulate.g + 0.2, $ColorRect.modulate.b + 0.2, 1)
 	position.y = 0
@@ -173,7 +172,7 @@ func play_note_effect():
 
 
 func _on_DurationTimer_timeout():
-	remove_from_group(str(track_number))	
+	remove_from_group(str(track_number))
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_BOUNCE)
 	tween.set_parallel(true)

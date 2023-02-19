@@ -50,11 +50,11 @@ func save_settings():
 		"staccato": staccato,
 	}
 	
-	var save_setting = File.new()
-	var error = save_setting.open("user://settings.dat", File.WRITE)
-	if error == OK:
-		save_setting.store_var(save_data)
-		save_setting.close()
+#	var save_setting = File.new()
+	var save_setting = FileAccess.open("user://settings.dat", FileAccess.WRITE)
+#	if error == OK:
+	save_setting.store_var(save_data)
+#	save_setting.close()
 
 func add_colors():
 	pass
@@ -65,28 +65,31 @@ func add_colors():
 
 func load_settings():
 	var file = File.new()
-	if file.file_exists("user://settings.dat"):
-		var error = file.open("user://settings.dat", File.READ)
-		if error == OK:
-			var save_data = file.get_var()
-			file.close()
-			background_path = save_data["background_path"]
-			colors = save_data["colors"]
-			parallax = save_data["parallax"]
-			happiness = save_data["happiness"]
-			sound_path = save_data["sound_path"]
-			json_path = save_data["json_path"]
-			note_spacing = save_data["note_spacing"]
-			vertical_offset = save_data["vertical_offset"]
-			speed = save_data["speed"]
-			note_size = save_data["note_size"]
-			square_ratio = save_data["square_ratio"]
-			note_texture = save_data["note_texture"]
-			note_effect_texture = save_data["note_effect_texture"]
-			bottom_note = save_data["bottom_note"]
-			top_margin = save_data["top_margin"]
-			note_texture_margins = save_data["note_texture_margins"]
-			staccato = save_data["staccato"]
+	if FileAccess.file_exists("user://settings.dat"):
+		var error = FileAccess.open("user://settings.dat", FileAccess.READ)
+#		if error == OK:
+		var save_data = error.get_var()
+#		if save_data == null:
+#			save_settings()
+#			return
+#		file.close()
+		background_path = save_data["background_path"]
+		colors = save_data["colors"]
+		parallax = save_data["parallax"]
+		happiness = save_data["happiness"]
+		sound_path = save_data["sound_path"]
+		json_path = save_data["json_path"]
+		note_spacing = save_data["note_spacing"]
+		vertical_offset = save_data["vertical_offset"]
+		speed = save_data["speed"]
+		note_size = save_data["note_size"]
+		square_ratio = save_data["square_ratio"]
+		note_texture = save_data["note_texture"]
+		note_effect_texture = save_data["note_effect_texture"]
+		bottom_note = save_data["bottom_note"]
+		top_margin = save_data["top_margin"]
+		note_texture_margins = save_data["note_texture_margins"]
+		staccato = save_data["staccato"]
 
 #------------------------------------------------------------------------|
 #OTHER

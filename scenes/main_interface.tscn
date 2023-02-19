@@ -32,103 +32,65 @@ theme_override_constants/margin_bottom = 50
 
 [node name="HSplitContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-offset_left = 25.0
-offset_top = 50.0
-offset_right = 1895.0
-offset_bottom = 1041.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
-offset_right = 906.0
-offset_bottom = 991.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
-offset_right = 906.0
-offset_bottom = 42.0
 
 [node name="NoteTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-offset_right = 451.0
-offset_bottom = 42.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Set All Notes' Texture"
 
 [node name="EffectTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-offset_left = 455.0
-offset_right = 906.0
-offset_bottom = 42.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Set All Effects' Texture"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 46.0
-offset_right = 906.0
-offset_bottom = 88.0
 
 [node name="LeftMarginSlider" type="HSlider" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-offset_top = 13.0
-offset_right = 177.0
-offset_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 value = 11.0
 
 [node name="LeftMarginButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-offset_left = 181.0
-offset_right = 444.0
-offset_bottom = 42.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Set Notes' Left Margin"
 
 [node name="RightMarginSlider" type="HSlider" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-offset_left = 448.0
-offset_top = 13.0
-offset_right = 625.0
-offset_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 value = 11.0
 
 [node name="RightMarginButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-offset_left = 629.0
-offset_right = 906.0
-offset_bottom = 42.0
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "Set Notes' Right Margin"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 92.0
-offset_right = 906.0
-offset_bottom = 134.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer4"]
 modulate = Color(0.666667, 0.329412, 0.384314, 1)
 layout_mode = 2
-offset_right = 270.0
-offset_bottom = 42.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 28
 text = "note length preview"
 
 [node name="NoteLengthSlider" type="HSlider" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
-offset_left = 274.0
-offset_top = 13.0
-offset_right = 906.0
-offset_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 min_value = 0.1
@@ -138,9 +100,6 @@ value = 0.5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 138.0
-offset_right = 906.0
-offset_bottom = 934.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -150,14 +109,9 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 938.0
-offset_right = 906.0
-offset_bottom = 991.0
 
 [node name="ResetColorsButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_right = 200.0
-offset_bottom = 53.0
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
 theme_override_font_sizes/font_size = 32
@@ -165,9 +119,6 @@ text = "Reset Colors"
 
 [node name="ResetParallaxButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_left = 204.0
-offset_right = 432.0
-offset_bottom = 53.0
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
 theme_override_font_sizes/font_size = 32
@@ -175,9 +126,6 @@ text = "Reset Parallax"
 
 [node name="ResetNoteTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_left = 436.0
-offset_right = 656.0
-offset_bottom = 53.0
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
 theme_override_font_sizes/font_size = 32
@@ -185,9 +133,6 @@ text = "Reset Texture"
 
 [node name="ResetNoteEffectTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_left = 660.0
-offset_right = 849.0
-offset_bottom = 53.0
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
 theme_override_font_sizes/font_size = 32
@@ -195,25 +140,18 @@ text = "Reset Effect"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
-offset_left = 910.0
-offset_right = 1870.0
-offset_bottom = 991.0
 size_flags_horizontal = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
 layout_mode = 2
-offset_right = 960.0
-offset_bottom = 991.0
 
 [node name="Background" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2i(960, 540)
+custom_minimum_size = Vector2(960, 540)
 layout_mode = 2
-offset_right = 960.0
-offset_bottom = 540.0
 size_flags_horizontal = 4
 texture = ExtResource("2_vb6hc")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="BottomMarginAnchor" type="Node2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background"]
@@ -232,70 +170,47 @@ points = PackedVector2Array(0, 0, 960, 0)
 default_color = Color(1, 0.266667, 0.435294, 1)
 
 [node name="Sizer" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2i(960, 0)
+custom_minimum_size = Vector2(960, 0)
 layout_mode = 2
-offset_top = 544.0
-offset_right = 960.0
-offset_bottom = 544.0
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 548.0
-offset_right = 960.0
-offset_bottom = 991.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 443.0
 
 [node name="SpeedSliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 73.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer"]
 modulate = Color(0.67, 0.2546, 0.351527, 1)
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Speed"
 
 [node name="SpeedSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 57.0
-offset_right = 262.0
-offset_bottom = 73.0
 min_value = 50.0
 max_value = 1000.0
 step = 15.0
-value = 555.0
+value = 560.0
 
 [node name="NoteSpacingSliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
-offset_top = 77.0
-offset_right = 262.0
-offset_bottom = 150.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSpacingSliderContainer"]
 modulate = Color(0.67, 0.2546, 0.351527, 1)
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Note Spacing"
 
 [node name="NoteSpacingSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSpacingSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 57.0
-offset_right = 262.0
-offset_bottom = 73.0
 max_value = 1.0
 step = 0.1
 value = 1.0
@@ -303,24 +218,16 @@ value = 1.0
 [node name="NoteSizeSliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
-offset_top = 154.0
-offset_right = 304.0
-offset_bottom = 227.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSizeSliderContainer"]
 modulate = Color(0.67, 0.2546, 0.351527, 1)
 layout_mode = 2
-offset_right = 304.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Note Size (height)"
 
 [node name="NoteSizeSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSizeSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 57.0
-offset_right = 304.0
-offset_bottom = 73.0
 min_value = 32.0
 max_value = 72.0
 step = 2.0
@@ -328,72 +235,48 @@ value = 64.0
 
 [node name="TopMarginSliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 77.0
-offset_right = 262.0
-offset_bottom = 150.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TopMarginSliderContainer"]
 modulate = Color(0.67, 0.2546, 0.351527, 1)
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Top Margin"
 
 [node name="TopMarginSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TopMarginSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 57.0
-offset_right = 262.0
-offset_bottom = 73.0
 min_value = 48.0
 max_value = 1080.0
 value = 880.0
 
 [node name="VerticalOffsetSliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 154.0
-offset_right = 262.0
-offset_bottom = 227.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VerticalOffsetSliderContainer"]
 modulate = Color(0.67, 0.2546, 0.351527, 1)
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Bottom Margin"
 
 [node name="VerticalOffsetSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VerticalOffsetSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 57.0
-offset_right = 262.0
-offset_bottom = 73.0
 min_value = -1024.0
 max_value = 0.0
 value = -192.0
 
 [node name="AudioOffsetContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 231.0
-offset_right = 262.0
-offset_bottom = 319.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer"]
 modulate = Color(0.67, 0.2546, 0.351527, 1)
 layout_mode = 2
-offset_right = 262.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Offset Audio"
 
 [node name="AudioOffsetSlider" type="SpinBox" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 57.0
-offset_right = 83.0625
-offset_bottom = 88.0
 size_flags_horizontal = 0
 min_value = -10.0
 max_value = 10.0
@@ -404,9 +287,6 @@ update_on_text_changed = true
 
 [node name="PreviewButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 323.0
-offset_right = 262.0
-offset_bottom = 381.0
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
 theme_override_font_sizes/font_size = 36
@@ -414,9 +294,6 @@ text = "Preview Video"
 
 [node name="ExportButton2" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 385.0
-offset_right = 262.0
-offset_bottom = 443.0
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
 theme_override_font_sizes/font_size = 36
@@ -424,31 +301,20 @@ text = "Export Video"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_left = 266.0
-offset_right = 266.0
-offset_bottom = 443.0
 
 [node name="SquareToggleContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 visible = false
 layout_mode = 2
-offset_right = 215.0
-offset_bottom = 81.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer"]
 modulate = Color(0.666667, 0.329412, 0.384314, 1)
 layout_mode = 2
-offset_right = 215.0
-offset_bottom = 53.0
 theme_override_font_sizes/font_size = 36
 text = "Square ratio"
 
 [node name="SquareToggle" type="CheckButton" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 85.0
-offset_top = 57.0
-offset_right = 129.0
-offset_bottom = 81.0
 size_flags_horizontal = 4
 
 [node name="Preview" type="Node2D" parent="."]
