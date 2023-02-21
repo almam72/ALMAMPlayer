@@ -11,6 +11,7 @@ var default_effect_texture = load("res://assets/sprites/note_effect_texture.png"
 var note_margins = Vector2(12,12)
 var mouse_inside = false
 var staccato = false
+var dont_color = false
 @onready var texture_rect = $HBoxContainer2/TextureRect
 @onready var note_effect_preview = $Container/NoteEffectPreview
 
@@ -22,7 +23,8 @@ func apply_color():
 	$Container/Label.text = text
 	$Container/ColorPickerButton.color = color
 	texture_rect.modulate = color
-	note_effect_preview.modulate = color
+	if not GlobalVariables.dont_color[str(number)]:
+		note_effect_preview.modulate = color
 	GlobalVariables.colors[str(number)] = color
 	GlobalVariables.save_settings()
 
@@ -52,7 +54,8 @@ func apply_note_effect_texture():
 
 func _on_color_picker_button_color_changed(color):
 	texture_rect.modulate = color
-	note_effect_preview.modulate = color
+	if not GlobalVariables.dont_color[str(number)]:
+		note_effect_preview.modulate = color
 	GlobalVariables.colors[str(number)] = color 
 	GlobalVariables.save_settings()
 
@@ -114,7 +117,7 @@ func set_effect_texture():
 #		# Failed
 #		print("error loading image :(")
 #	note_effect_preview.texture = ImageTexture.new()
-	texture_rect.texture = ImageTexture.create_from_image(Image.load_from_file(GlobalVariables.note_effect_texture[str(number)]))
+	note_effect_preview.texture = ImageTexture.create_from_image(Image.load_from_file(GlobalVariables.note_effect_texture[str(number)]))
 #	note_effect_preview.texture.create_from_image(image)
 #	note_effect_preview.custom_minimum_size = note_effect_preview.texture.get_size()
 
@@ -133,6 +136,11 @@ func apply_staccato():
 	GlobalVariables.staccato[str(number)] = staccato
 	$Container/CheckBox.button_pressed = GlobalVariables.staccato[str(number)]
 	GlobalVariables.save_settings()
+	
+func apply_dont_color():
+	GlobalVariables.dont_color[str(number)] = dont_color
+	$Container/ColorCheckBox.button_pressed = GlobalVariables.dont_color[str(number)]
+	GlobalVariables.save_settings()
 
 func _on_check_box_toggled(button_pressed):
 	if button_pressed:
@@ -143,6 +151,10 @@ func _on_check_box_toggled(button_pressed):
 	GlobalVariables.save_settings()
 
 
-
-
-
+func _on_color_check_box_toggled(button_pressed):
+	if button_pressed:
+		$Container/NoteEffectPreview.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	else:
+		$Container/NoteEffectPreview.modulate = GlobalVariables.colors[str(number)]
+	GlobalVariables.dont_color[str(number)] = button_pressed
+	GlobalVariables.save_settings()

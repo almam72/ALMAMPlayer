@@ -6,7 +6,8 @@ var input_threshold = 0.4
 var recording
 var file_path
 var loaded_file = File.new()
-var notes = {}
+var notes = []
+var sorted_notes = []
 var pitchbends = {}
 var dance_notes = {}
 var time_accuracy = 0.1
@@ -20,8 +21,11 @@ var first_note_played = false
 var alternate = 1
 var previous_rotation = -0.008
 
+var seconds_per_tick = 0
+var ticks_per_beat = 0
+var tempo = 500000
 var smf_data:SMF.SMFData = null
-
+var delay = 0.5
 
 func _ready():
 #	print(GlobalVariables.square_ratio)
@@ -52,41 +56,67 @@ func load_midi():
 	track_number = 0
 	
 	for track in smf_data.tracks:
+		var has_notes = false
 		if track.events.size() == 0:
-#			track_number += 1
 			continue
+		for note in track.events:
+			if note.event.type == 144:
+				has_notes = true
+#			print(note.event.type)
+		if not has_notes:
+			continue
+			
 		set_track_texture(track_number)
 		set_track_effect_texture(track_number)
 		track_number += 1
-	await get_tree().create_timer(0.5).timeout
+		
+	await get_tree().create_timer(0.0).timeout
 #	track_number = 0
 	track_number = 0
 	
-	var tempo = 500000
+#	for track in smf_data.tracks:
+#		for note in track.events:
+#			if note.event.type == 240:
+#				if note.event.args.has("bpm"):
+#					tempo = note.event.args.bpm
+#					print("tempo: " + str(tempo))
 	for track in smf_data.tracks:
 		for note in track.events:
+			var note_array = {}
 			if note.event.type == 240:
 				if note.event.args.has("bpm"):
-					tempo = note.event.args.bpm
-					print("tempo: " + str(tempo))
+					note_array["midi"] = note.event.args.bpm
+					note_array["duration"] = -100
+					note_array["time"] = note.time
+					add_note_to_array(note_array, track_number)
+
+
 	for track in smf_data.tracks:
+		var has_notes = false
 		if track.events.size() == 0:
+			continue
+		for note in track.events:
+			if note.event.type == 144:
+				has_notes = true
+#			print(note.event.type)
+		if not has_notes:
 			continue
 #			print(track)
 		var track_instance = track_scene.instantiate()
 		track_instance.name = "Track" + str(track_number)
+#		print("Track" + str(track_number))
 		track_instance.track_number = track_number
 		track_instance.speed = GlobalVariables.speed
 		track_instance.global_position = Vector2(0.5 * GlobalVariables.speed * GlobalVariables.parallax[str(track_number)],0)
 		$WaveAnchor/NoteHolder.add_child(track_instance)
 		
-		var unfinished_notes = []
+
 		
 		
-		var ticks_per_beat = smf_data.timebase
+		ticks_per_beat = smf_data.timebase
 #		var last_event_ticks = 0
 #		var microseconds = 0
-
+#		var has_notes = false
 		for note in track.events:
 #			if note.event.type == 240:
 #				if note.event.args.has("bpm"):
@@ -103,81 +133,112 @@ func load_midi():
 			
 			var seconds = note.time * seconds_per_tick
 #			print("seconds_per_tick: " + str(seconds_per_tick))
-			
-#			if note.event.type == 128:
+			if note.event.type == 224:
+				note_array["midi"] = note.event.value
+				note_array["duration"] = -224
+				note_array["time"] = note.time
+				add_note_to_array(note_array, track_number)
+				
+			if note.event.type == 128:
+				has_notes = true
+#				print(note.event)
+				note_array["midi"] = note.event.note
+				note_array["duration"] = -128
+				note_array["time"] = note.time
+				add_note_to_array(note_array, track_number)
+				
 #				for unfinished_note in unfinished_notes:
 #					unfinished_note[2]
 
 #				print("test")
+			#note on
 			if note.event.type == 144:
 				note_array["midi"] = note.event.note
-				note_array["duration"] = 0.1
-				note_array["time"] = seconds
+				note_array["duration"] = -144
+				note_array["time"] = note.time
 #				print(seconds)
-				add_note_to_array(note_array, track_number)
-				
-			unfinished_notes.append(note_array)
+				add_note_to_array(note_array, track_number, note.event.velocity)
+
+					
+#					print("tempo: " + str(tempo))
+					
 #			print(note.event.type)
 #			print(note_array)
+
 		track_number += 1
-	start()
-
-
-func load_json():
-	var file = File.new()
 	
-	file.open(GlobalVariables.json_path, file.FileOpts.READ)
-	var text = file.get_as_text()
-	var json_var = JSON.new()	
-	var midi_json = json_var.parse(text)
-	if midi_json == OK:
-		midi_json = json_var.get_data()
-	file.close()
+#	print(notes)
+	notes.sort_custom(sort_ascending)
+
+#	print(notes)
 	
-#	bpm = midi_json["header"]["tempos"][0]["bpm"]
-
-	var track_number = 0
-	for track in midi_json["tracks"]:
-		if track["notes"].size() == 0:
-#			print("track_number")
-#			track_number += 1
-			continue
-
-		for pitchbend in track["pitchBends"]:
-			add_pitchbend_to_array(pitchbend, track_number)
-		track_number += 1
-		
-			
-	track_number = 0
-	for track in midi_json["tracks"]:
-		if track["notes"].size() == 0:
-#			track_number += 1
-			continue
-		set_track_texture(track_number)
-		set_track_effect_texture(track_number)
-		track_number += 1
-	await get_tree().create_timer(0.5).timeout
-	track_number = 0
-	for track in midi_json["tracks"]:
-		if track["notes"].size() == 0:
-#			track_number += 1
-			continue
-		
-		var track_instance = track_scene.instantiate()
-		track_instance.name = "Track" + str(track_number)
-		track_instance.track_number = track_number
-		track_instance.speed = GlobalVariables.speed
-		track_instance.global_position = Vector2(0.5 * GlobalVariables.speed * GlobalVariables.parallax[str(track_number)],0)
-		$WaveAnchor/NoteHolder.add_child(track_instance)
-		for note in track["notes"]:
-#			print(note)
-			
-			add_note_to_array(note, track_number)
-		track_number += 1
+#	sorted_notes
 	start()
+	
+func sort_ascending(a, b):
+	if a[2] == b[2]:
+		if a[1] == -100:
+			return true
+	if a[2] < b[2]:
+		return true
+	return false
+
+
+#func load_json():
+#	var file = File.new()
+#
+#	file.open(GlobalVariables.json_path, file.FileOpts.READ)
+#	var text = file.get_as_text()
+#	var json_var = JSON.new()	
+#	var midi_json = json_var.parse(text)
+#	if midi_json == OK:
+#		midi_json = json_var.get_data()
+#	file.close()
+#
+##	bpm = midi_json["header"]["tempos"][0]["bpm"]
+#
+#	var track_number = 0
+#	for track in midi_json["tracks"]:
+#		if track["notes"].size() == 0:
+##			print("track_number")
+##			track_number += 1
+#			continue
+#
+#		for pitchbend in track["pitchBends"]:
+#			add_pitchbend_to_array(pitchbend, track_number)
+#		track_number += 1
+#
+#
+#	track_number = 0
+#	for track in midi_json["tracks"]:
+#		if track["notes"].size() == 0:
+##			track_number += 1
+#			continue
+#		set_track_texture(track_number)
+#		set_track_effect_texture(track_number)
+#		track_number += 1
+#	await get_tree().create_timer(0.0).timeout
+#	track_number = 0
+#	for track in midi_json["tracks"]:
+#		if track["notes"].size() == 0:
+##			track_number += 1
+#			continue
+#
+#		var track_instance = track_scene.instantiate()
+#		track_instance.name = "Track" + str(track_number)
+#		track_instance.track_number = track_number
+#		track_instance.speed = GlobalVariables.speed
+#		track_instance.global_position = Vector2(0.5 * GlobalVariables.speed * GlobalVariables.parallax[str(track_number)],0)
+#		$WaveAnchor/NoteHolder.add_child(track_instance)
+#		for note in track["notes"]:
+##			print(note)
+#
+#			add_note_to_array(note, track_number)
+#		track_number += 1
+#	start()
 
 func set_track_texture(track_number):
-	print(track_number)
+#	print(track_number)
 	if GlobalVariables.note_texture[str(track_number)] == "res://assets/sprites/note_texture.png":
 		GlobalVariables.note_images[str(track_number)] = default_texture
 		return
@@ -220,11 +281,11 @@ func load_background_image(file):
 func start():
 	await get_tree().create_timer(0.5).timeout
 	for note in notes:
-		play_notes(notes[note])
+		play_notes(note)
 	for note in dance_notes:
 		dance(dance_notes[note])
 	
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(delay).timeout
 	if not compare_floats(0, GlobalVariables.happiness):
 		if GlobalVariables.happiness > 0:
 			await get_tree().create_timer(GlobalVariables.happiness).timeout
@@ -246,18 +307,18 @@ func add_note_to_dance_array(note, track_number):
 	
 	dance_notes[time].append([note["midi"], note["duration"], note["time"] + 0.5, track_number])
 
-func add_pitchbend_to_array(pitchbend, track_number):
+func add_pitchbend_to_array(time, value, track_number):
 #	print(track_number)
 #	var time = str(pitchbends["time"] + 0.5)
 #	if not pitchbends.has(time):
 #		pitchbends[time] = []
 #	pitchbends[time].append([pitchbend["time"] + 0.5, pitchbend["value"], track_number])
-	await get_tree().create_timer(pitchbend["time"] + 1.5).timeout
+	await get_tree().create_timer(time + delay).timeout
 	
 #	$Tween.interpolate_property(self, "scale", scale, original_scale * 0.01, 0.2, Tween.TRANS_SINE)
 	for note in get_tree().get_nodes_in_group(str(track_number)):
 #		print(pitchbend["value"])
-		note.bend(pitchbend["value"])
+		note.bend(value)
 #		var tween = get_tree().create_tween()
 #		tween.set_trans(Tween.TRANS_SINE)
 #		tween.set_ease(Tween.EASE_IN_OUT)
@@ -270,19 +331,19 @@ func add_pitchbend_to_array(pitchbend, track_number):
 	
 			
 
-func add_note_to_array(note, track_number):
+func add_note_to_array(note, track_number, velocity = 1):
 	if not compare_floats(0, GlobalVariables.happiness) && GlobalVariables.happiness > 0:
-		var time = str(note["time"] + 0.5 + abs(GlobalVariables.happiness))
-		if not notes.has(time):
-			notes[time] = []
-		notes[time].append([note["midi"], note["duration"], note["time"] + 0.5, track_number])
-			
+#		var time = str(note["time"] + 0.5 + abs(GlobalVariables.happiness))
+#		if not notes.has(time):
+#			notes[time] = []
+		notes.append([note["midi"], note["duration"], note["time"], track_number, velocity])
+		
 	else:
-		var time = str(note["time"] + 0.5)
-		if not notes.has(time):
-			notes[time] = []
-		notes[time].append([note["midi"], note["duration"], note["time"] + 0.5 + abs(GlobalVariables.happiness), track_number])
-			
+#		var time = str(note["time"] + 0.5)
+#		if not notes.has(time):
+#			notes[time] = []
+		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.happiness), track_number, velocity])
+		
 #	var time = str(note["time"])
 	
 #	if not notes.has(time):
@@ -292,25 +353,54 @@ func add_note_to_array(note, track_number):
 
 func dance(dance_notes):
 	pass
-	
-func play_notes(notes):
-#	return
-	for note in notes:
-		var note_number = note[0]
-		var duration = note[1]
-		var time = note[2]
-		var note_instance = note_scene.instantiate()
-		note_instance.note_number = note_number
-		note_instance.duration = duration
-		note_instance.speed = bpm
-		note_instance.track_number = note[3]
-		note_instance.time = time
-		var parallax = 1.0 * GlobalVariables.parallax[str(note[3])]
-	
-		note_instance.global_position = Vector2(time * bpm * parallax, 0)
-		$WaveAnchor/NoteHolder.position.y = GlobalVariables.vertical_offset
-		get_node("WaveAnchor/NoteHolder/Track" + str(note[3])).add_child(note_instance)
+
+var last_event_ticks = 0 
+var microseconds = 0
+ 
+var unfinished_notes = []
+
+func play_notes(note):
+	var delta_ticks = note[2] - last_event_ticks
+	last_event_ticks = note[2]
+	var delta_microseconds = tempo * delta_ticks / ticks_per_beat
+	microseconds += delta_microseconds
+	if note[1] == -144:
+		note[2] = microseconds / 1000000
+		unfinished_notes.append(note)
 		
+		return
+
+	if note[1] == -100:
+		tempo = note[0]
+		return
+	
+	if note[1] == -224:
+		add_pitchbend_to_array(microseconds / 1000000, note[0], note[3])
+
+	if note[1] == -128:
+		for unfinished_note in unfinished_notes:
+			if unfinished_note[3] == note[3]:
+				if unfinished_note[0] == note[0]:
+	#	return
+	#	for note in notes:
+					var note_number = note[0]
+					var duration = (microseconds / 1000000) - unfinished_note[2]
+					var time = unfinished_note[2] + delay
+#					print("time : " + str(time))
+#					print("duration : " + str(duration))
+					var note_instance = note_scene.instantiate()
+					note_instance.note_number = note_number
+					note_instance.duration = duration
+					note_instance.speed = bpm
+					note_instance.track_number = note[3]
+					note_instance.velocity = unfinished_note[4]
+					note_instance.time = time
+					var parallax = 1.0 * GlobalVariables.parallax[str(note[3])]
+
+					note_instance.global_position = Vector2(time * bpm * parallax, 0)
+					$WaveAnchor/NoteHolder.position.y = GlobalVariables.vertical_offset
+					get_node("WaveAnchor/NoteHolder/Track" + str(note[3])).add_child(note_instance)
+					unfinished_notes.erase(unfinished_note)
 
 
 func play_note_effect(notes):
@@ -333,7 +423,7 @@ func create_note_effect(note_instance):
 	await get_tree().create_timer(note_instance.time).timeout
 	note_instance.time = 1.0
 	$WaveAnchor/NoteHolder.add_child(note_instance)
-	print(note_instance)
+#	print(note_instance)
 	
 
 

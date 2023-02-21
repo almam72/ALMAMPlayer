@@ -95,16 +95,16 @@ _data = {
 
 [node name="NoteEffect" type="Node2D"]
 modulate = Color(1, 1, 1, 0)
+z_index = 1147
 texture_filter = 2
 position = Vector2(-5.96046e-08, 0)
-z_index = 1147
 script = ExtResource("1")
 
 [node name="NoteEffect" type="Sprite2D" parent="."]
+z_index = 1073
 texture_filter = 2
 position = Vector2(0, -0.26984)
 scale = Vector2(0.8, 0.8)
-z_index = 1073
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true

@@ -19,7 +19,7 @@ offset_left = -29.0
 offset_top = -18.0
 offset_right = 1965.0
 offset_bottom = 1097.0
-color = Color(0.982, 1, 0.88, 1)
+color = Color(0.972549, 0.929412, 0.792157, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
@@ -50,7 +50,7 @@ text = "Set All Notes' Texture"
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
-text = "Set All Effects' Texture"
+text = "Set All \"note on\" Textures"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
@@ -113,30 +113,30 @@ layout_mode = 2
 [node name="ResetColorsButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
+theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
 text = "Reset Colors"
 
 [node name="ResetParallaxButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
+theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
 text = "Reset Parallax"
 
 [node name="ResetNoteTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
+theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
 text = "Reset Texture"
 
 [node name="ResetNoteEffectTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
+theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
-text = "Reset Effect"
+text = " Reset \"note on\" "
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
@@ -177,6 +177,7 @@ stretch_mode = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 24
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -185,10 +186,10 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer"]
-modulate = Color(0.67, 0.2546, 0.351527, 1)
+modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
-text = "Speed"
+text = "Speed/Zoom"
 
 [node name="SpeedSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer"]
 unique_name_in_owner = true
@@ -237,7 +238,7 @@ value = 64.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TopMarginSliderContainer"]
-modulate = Color(0.67, 0.2546, 0.351527, 1)
+modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "Top Margin"
@@ -253,7 +254,7 @@ value = 880.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VerticalOffsetSliderContainer"]
-modulate = Color(0.67, 0.2546, 0.351527, 1)
+modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "Bottom Margin"
@@ -269,7 +270,7 @@ value = -192.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer"]
-modulate = Color(0.67, 0.2546, 0.351527, 1)
+modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "Offset Audio"
@@ -288,14 +289,14 @@ update_on_text_changed = true
 [node name="PreviewButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
+theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 36
 text = "Preview Video"
 
 [node name="ExportButton2" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(0.878431, 1, 0.831373, 1)
+theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 36
 text = "Export Video"
 
@@ -316,6 +317,45 @@ text = "Square ratio"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+
+[node name="VelocitySliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer"]
+modulate = Color(0.423529, 0, 0.0980392, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Velocity force"
+
+[node name="VelocitySlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 0.25
+step = 0.001
+value = 0.2
+
+[node name="PitchBendSliderContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer"]
+modulate = Color(0.423529, 0, 0.0980392, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Pitch bend lvl"
+
+[node name="PitchBendSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 0.75
+step = 0.001
+value = 0.5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 27
+text = "^ if u dont want any velocity/pitch bend visualization set these all the way to the left"
+fit_content = true
 
 [node name="Preview" type="Node2D" parent="."]
 position = Vector2(912, 598)
@@ -359,25 +399,24 @@ filters = PackedStringArray("*.avi")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 1216.0
+offset_left = 1488.0
 offset_top = 608.0
 offset_right = 1912.0
 offset_bottom = 1072.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 28
-text = "before you can load your midi file you have to convert it to json.
-you can find a converter online i guess sorry about that (i use the tone.js one)
-if you have your .json file just drag and drop it here
-you also have to drag and drop an .mp3 and a background image if you like
+theme_override_font_sizes/normal_font_size = 27
+text = "drag a .mid and a .mp3 file here !
+you can also add a background image if you like
 if a track is above another one in the list it will get drawn in front of it
+
 created by almam:)"
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 1017.0
-offset_top = 880.0
-offset_right = 1176.0
-offset_bottom = 921.0
+offset_left = 1032.0
+offset_top = 885.0
+offset_right = 1191.0
+offset_bottom = 926.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 28
 text = "seconds"
@@ -385,18 +424,18 @@ text = "seconds"
 [node name="MP3" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 1216.0
+offset_left = 1232.0
 offset_top = 1008.0
-offset_right = 1905.0
-offset_bottom = 1072.0
+offset_right = 1914.0
+offset_bottom = 1071.0
 theme_override_colors/default_color = Color(0.129412, 0.498039, 0.321569, 1)
 theme_override_font_sizes/normal_font_size = 22
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 1000.0
+offset_left = 1032.0
 offset_top = 9.0
-offset_right = 1856.0
+offset_right = 1888.0
 offset_bottom = 473.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 28
@@ -420,6 +459,8 @@ text = "you dont get an actual preview of the midi notes here sorry"
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExportButton2" to="." method="_on_export_button_pressed"]
 [connection signal="toggled" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer/SquareToggle" to="." method="_on_square_toggle_toggled"]
+[connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer/VelocitySlider" to="." method="_on_velocity_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer/PitchBendSlider" to="." method="_on_pitch_bend_slider_value_changed"]
 [connection signal="timeout" from="Preview/Timer" to="Preview" method="_on_timer_timeout"]
 [connection signal="file_selected" from="SetAllNotesTextureFileDialog" to="." method="_on_set_all_notes_texture_file_dialog_file_selected"]
 [connection signal="file_selected" from="SetAllEffectsTextureFileDialog" to="." method="_on_set_all_effects_texture_file_dialog_file_selected"]

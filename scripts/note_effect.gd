@@ -79,4 +79,7 @@ func _on_Timer_timeout():
 	queue_free()
 
 func set_color():
-	color = GlobalVariables.colors[str(track_number)]
+	if not GlobalVariables.dont_color[str(track_number)]:
+		color = GlobalVariables.colors[str(track_number)]
+	else:
+		color = Color(1.0, 1.0, 1.0, 1.0)

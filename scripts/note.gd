@@ -26,6 +26,7 @@ var playing = false
 var bend_tween
 var ease_var = -1
 
+var velocity = 1
 
 func _ready():
 	staccato = GlobalVariables.staccato[str(track_number)]
@@ -117,8 +118,11 @@ func _process(delta):
 		ease_var = smoothstep(-2.0, 5.0, ease_var)
 #		print(ease)
 		$NoteAnchor.position.y = lerpf($NoteAnchor.position.y, bend_to, ease_var)
+#		$NoteAnchor.rotation_degrees += bend_to * delta * 0.1
 		if get_node_or_null("Node/NoteEffect") != null:
+			
 			$Node/NoteEffect.position.y = $NoteAnchor/TextureRect.global_position.y
+			$Node/NoteEffect.rotation_degrees += bend_to * delta * 0.1
 #	if not preview:
 #		position.x -= parallax * delta
 #	position.y += 0.25
@@ -133,10 +137,14 @@ func _on_Timer_timeout():
 	old_color = texture_rext.modulate
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_parallel(true)
 	tween.tween_property(texture_rext, "modulate", new_color, 0.2)
 	tween.tween_property(self, "scale",  scale * 1.03, 0.2).from(original_scale)
-	tween.tween_property(self, "position:y", position.y + 6, 0.2)
+	if GlobalVariables.velocity_strength < 0.01:
+		tween.tween_property(self, "position:y", position.y + 6, 0.2)
+	else:
+		tween.tween_property(self, "position:y", position.y + 0.25 + velocity * GlobalVariables.velocity_strength * 0.7, 0.2)
 	if duration > 1:
 		$AnimationPlayer.play("fade")
 	play_note_effect()
@@ -149,6 +157,11 @@ func _on_Timer_timeout():
 	
 func play_note_effect():
 	var note_instance = $Node/NoteEffect
+#	note_instance.scale = Vector2(0.8, 0.8)
+	if GlobalVariables.velocity_strength > 0.01:
+		var new_size = remap(velocity * GlobalVariables.velocity_strength, 0, 127 * GlobalVariables.velocity_strength, 0.55, 1.05)
+		note_instance.scale.x = new_size
+		note_instance.scale.y = new_size
 	note_instance.note_number = note_number
 	note_instance.duration = duration
 	note_instance.speed = speed
@@ -174,13 +187,17 @@ func play_note_effect():
 func _on_DurationTimer_timeout():
 	remove_from_group(str(track_number))
 	var tween = create_tween()
-	tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_parallel(true)
 	var color_tween = create_tween()
+	color_tween.set_ease(Tween.EASE_IN_OUT)
 	color_tween.tween_property(texture_rext, "modulate", old_color, 0.3)
 #	$Tween.interpolate_property(self, "scale", scale, original_scale * 0.01, 0.2, Tween.TRANS_SINE)
-	tween.tween_property(self, "position:y", position.y - 6, 0.2)
-	
+	if GlobalVariables.velocity_strength < 0.01:
+		tween.tween_property(self, "position:y", position.y - 6, 0.2)
+	else:
+		tween.tween_property(self, "position:y", position.y - 0.25 - velocity * GlobalVariables.velocity_strength * 0.7, 0.2)
 #	bend_to = 0
 
 	await get_tree().create_timer(1.2).timeout
@@ -211,5 +228,5 @@ func set_note_margins():
 	texture_rext.patch_margin_right = GlobalVariables.note_texture_margins[str(track_number)].y
 
 func bend(value = 0):
-	bend_to = value * GlobalVariables.note_spacing * -4
+	bend_to = value * GlobalVariables.note_spacing * -4 * 0.0001 * GlobalVariables.pitch_bend_strength
 	

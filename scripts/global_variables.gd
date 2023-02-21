@@ -15,15 +15,20 @@ var note_texture_margins = {}
 var note_effect_texture = {}
 var parallax = {}
 var staccato = {}
+var dont_color = {}
 var staccato_texture = load("res://assets/sprites/note_staccato_image.png")
 var bg = load("res://assets/sprites/black_image.png")
 var background_path = "res://assets/sprites/black_image.png"
-var json_path = "res://assets/sprites/test.json"
+var json_path = "res://assets/sprites/test.mid"
 var sound_path = "res://assets/sprites/demo.mp3"
 var square_ratio
 var bottom_note = 0
 var note_range = 0
 var top_margin = 880
+
+var velocity_strength = 0.2
+var pitch_bend_strength = 0.5
+
 
 #------------------------------------------------------------------------
 #SAVING SETTINGS
@@ -48,6 +53,10 @@ func save_settings():
 		"top_margin": top_margin,
 		"note_texture_margins": note_texture_margins,
 		"staccato": staccato,
+		
+		"velocity_strength": velocity_strength,
+		"pitch_bend_strength": pitch_bend_strength,
+		"dont_color": dont_color,
 	}
 	
 #	var save_setting = File.new()
@@ -59,9 +68,15 @@ func save_settings():
 func add_colors():
 	pass
 
+
+
 #------------------------------------------------------------------------
 #LOADING SETTINGS
 #------------------------------------------------------------------------
+
+func load_variable(save_data, variable):
+	if save_data.has(variable):
+		set(variable, save_data[variable])
 
 func load_settings():
 	var file = File.new()
@@ -73,6 +88,10 @@ func load_settings():
 #			save_settings()
 #			return
 #		file.close()
+		load_variable(save_data, "velocity_strength")
+		load_variable(save_data, "pitch_bend_strength")
+		load_variable(save_data, "dont_color")
+		
 		background_path = save_data["background_path"]
 		colors = save_data["colors"]
 		parallax = save_data["parallax"]
