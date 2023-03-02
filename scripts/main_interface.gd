@@ -52,27 +52,38 @@ func _ready():
 #	load_json("")
 #	get_tree().files_dropped.connect(self._on_files_dropped())
 	get_tree().get_root().connect("files_dropped", self._on_files_dropped)
+	
+func _input(event):
+	if Input.is_action_just_pressed("open_file"):
+		$%LoadSongFileDialog.show()
+
+func load_song(file):
+	if file.right(4) == ".mid":
+		load_midi(file)
+		
+	if file.right(4) == ".mp3" || file.right(4) == ".wav":
+		load_sound(file)
+		
+	if file.right(4) == ".png" || file.right(4) == ".jpg":
+		var was_inside = false
+		await get_tree().create_timer(0.1).timeout
+		for track in color_container.get_children():
+			if track.mouse_inside:
+				track.note_texture = file
+				track.apply_note_texture()
+				was_inside = true
+		if not was_inside:
+			load_image(file)
+#	if file.right(5) == ".json":
+#		load_json(file)
 
 func _on_files_dropped(files):
 	for file in files:
-		if file.right(4) == ".mid":
-			load_midi(file)
-			
-		if file.right(4) == ".mp3" || file.right(4) == ".wav":
-			load_sound(file)
-		if file.right(4) == ".png" || file.right(4) == ".jpg":
-			var was_inside = false
-			await get_tree().create_timer(0.1).timeout
-			for track in color_container.get_children():
-				if track.mouse_inside:
-					track.note_texture = file
-					track.apply_note_texture()
-					was_inside = true
-			if not was_inside:
-				load_image(file)
-#		if file.right(5) == ".json":
-#			load_json(file)
-			
+		load_song(file)
+
+func _on_load_song_file_dialog_files_selected(paths):
+	for file in paths:
+		load_song(file)
 
 #	var audio_loader = AudioLoader.new()
 #	$AudioStreamPlayer.set_stream(audio_loader.loadfile(file_path))
@@ -478,3 +489,4 @@ func _on_velocity_slider_value_changed(value):
 func _on_pitch_bend_slider_value_changed(value):
 	GlobalVariables.pitch_bend_strength = value
 	GlobalVariables.save_settings()
+

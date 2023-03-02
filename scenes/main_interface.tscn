@@ -441,6 +441,15 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 28
 text = "you dont get an actual preview of the midi notes here sorry"
 
+[node name="LoadSongFileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+initial_position = 1
+title = "Open Song File(s)"
+size = Vector2i(1200, 675)
+ok_button_text = "Open"
+file_mode = 1
+access = 2
+
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer2/NoteTextureButton" to="." method="_on_note_texture_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer2/EffectTextureButton" to="." method="_on_effect_texture_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3/LeftMarginButton" to="." method="set_all_notes_left_margin"]
@@ -465,3 +474,4 @@ text = "you dont get an actual preview of the midi notes here sorry"
 [connection signal="file_selected" from="SetAllNotesTextureFileDialog" to="." method="_on_set_all_notes_texture_file_dialog_file_selected"]
 [connection signal="file_selected" from="SetAllEffectsTextureFileDialog" to="." method="_on_set_all_effects_texture_file_dialog_file_selected"]
 [connection signal="file_selected" from="ExportVideo" to="." method="_on_export_video_file_selected"]
+[connection signal="files_selected" from="LoadSongFileDialog" to="." method="_on_load_song_file_dialog_files_selected"]
