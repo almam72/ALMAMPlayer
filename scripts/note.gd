@@ -67,9 +67,9 @@ func _ready():
 #	if texture == 2:
 #		$TextureRect.texture = load("res://assets/sprites/note02.png")
 #		$TextureRect2.texture = load("res://assets/sprites/note02.png")
-#	if GlobalVariables.happiness > 0.1:
+#	if GlobalVariables.audio_offset > 0.1:
 #		$TextureRect.material.set_shader_param("happy", true)
-#		$TextureRect.material.set_shader_param("speed", GlobalVariables.happiness)
+#		$TextureRect.material.set_shader_param("speed", GlobalVariables.audio_offset)
 		
 	
 #	$ColorRect.margin_bottom *= parallax / 190 + 6

@@ -8,10 +8,12 @@ var vertical_offset = -192
 var speed = 400
 var note_spacing = 1
 var note_size = 30
-var happiness = 0.0
+var audio_offset = 0.0
 var colors = {}
+var colors_json = {}
 var note_texture = {}
 var note_texture_margins = {}
+var note_texture_margins_json = {}
 var note_effect_texture = {}
 var parallax = {}
 var staccato = {}
@@ -29,18 +31,29 @@ var top_margin = 880
 var velocity_strength = 0.2
 var pitch_bend_strength = 0.5
 
-
+var loaded_settings_path = "user://default_settings.json"
+var default_settings_path = "user://default_settings.json"
 #------------------------------------------------------------------------
 #SAVING SETTINGS
 #------------------------------------------------------------------------
 
-func save_settings():
+func save_settings(path = loaded_settings_path):
+	var i = 0
+	for color in colors.values():
+		colors_json[str(i)] = color.to_html()
+		i += 1
+		
+	i = 0
+	for margins in note_texture_margins.values():
+		note_texture_margins_json[str(i)] = var_to_str(margins)
+		i += 1
+	
 	var save_data = {
 		"vertical_offset": vertical_offset,
 		"speed": speed,
 		"note_spacing": note_spacing,
-		"happiness": happiness,
-		"colors": colors,
+		"audio_offset": audio_offset,
+		"colors_json": colors_json,
 		"note_texture": note_texture,
 		"note_effect_texture": note_effect_texture,
 		"parallax": parallax,
@@ -51,7 +64,7 @@ func save_settings():
 		"square_ratio": square_ratio,
 		"bottom_note": bottom_note,
 		"top_margin": top_margin,
-		"note_texture_margins": note_texture_margins,
+		"note_texture_margins_json": note_texture_margins_json,
 		"staccato": staccato,
 		
 		"velocity_strength": velocity_strength,
@@ -60,9 +73,9 @@ func save_settings():
 	}
 	
 #	var save_setting = File.new()
-	var save_setting = FileAccess.open("user://settings.dat", FileAccess.WRITE)
+	var save_setting = FileAccess.open(path, FileAccess.WRITE)
 #	if error == OK:
-	save_setting.store_var(save_data)
+	save_setting.store_line(JSON.stringify(save_data,"\t"))
 #	save_setting.close()
 
 func add_colors():
@@ -78,13 +91,14 @@ func load_variable(save_data, variable):
 	if save_data.has(variable):
 		set(variable, save_data[variable])
 
-func load_settings():
+func load_settings(path):
 	var file = File.new()
-	if FileAccess.file_exists("user://settings.dat"):
-		var error = FileAccess.open("user://settings.dat", FileAccess.READ)
+	if FileAccess.file_exists(path):
+#		var error = FileAccess.open("user://settings.json", FileAccess.READ)
 #		if error == OK:
-		var save_data = error.get_var()
-#		if save_data == null:
+		var json_text = FileAccess.get_file_as_string(path)
+		var save_data = JSON.parse_string(json_text)
+#		if save_data == null:	
 #			save_settings()
 #			return
 #		file.close()
@@ -93,9 +107,9 @@ func load_settings():
 		load_variable(save_data, "dont_color")
 		
 		background_path = save_data["background_path"]
-		colors = save_data["colors"]
+		colors_json = save_data["colors_json"]
 		parallax = save_data["parallax"]
-		happiness = save_data["happiness"]
+		audio_offset = save_data["audio_offset"]
 		sound_path = save_data["sound_path"]
 		json_path = save_data["json_path"]
 		note_spacing = save_data["note_spacing"]
@@ -107,15 +121,29 @@ func load_settings():
 		note_effect_texture = save_data["note_effect_texture"]
 		bottom_note = save_data["bottom_note"]
 		top_margin = save_data["top_margin"]
-		note_texture_margins = save_data["note_texture_margins"]
+		note_texture_margins_json = save_data["note_texture_margins_json"]
 		staccato = save_data["staccato"]
-
+	else:
+		return
+		
+	loaded_settings_path = path
+	DisplayServer.window_set_title("ALMAMPlayer | config: " + path)
+	var i = 0
+	
+	for color in colors_json.values():
+		colors[str(i)] = Color(colors_json[str(i)])
+		i += 1
+	
+	i = 0
+	for margins in note_texture_margins_json.values():
+		note_texture_margins[str(i)] = str_to_var(note_texture_margins_json[str(i)])
+		i += 1
 #------------------------------------------------------------------------|
 #OTHER
 #------------------------------------------------------------------------|
 
 func _ready():
-	load_settings()
+	load_settings("user://default_settings.json")
 
 func _process(delta):
 	if Input.is_action_just_pressed("fullscreen"):

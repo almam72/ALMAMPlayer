@@ -1,24 +1,39 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1q57iuoqo7ru"]
+[gd_scene load_steps=6 format=3 uid="uid://b1q57iuoqo7ru"]
 
 [ext_resource type="Script" path="res://scripts/track_color.gd" id="1_20gnx"]
+[ext_resource type="Theme" uid="uid://cfni7mm2mqusg" path="res://assets/main_interface.tres" id="1_kpe42"]
 [ext_resource type="Texture2D" uid="uid://bytkrlsrpicjr" path="res://assets/sprites/note_effect_texture.png" id="2_fjert"]
 [ext_resource type="Texture2D" uid="uid://dd3ddrigclglg" path="res://assets/sprites/note00.png" id="2_h8355"]
+[ext_resource type="Texture2D" uid="uid://d0npwtk8ndhgc" path="res://assets/sprites/note_effect_visibility.png" id="3_a1vf2"]
 
 [node name="TrackColor" type="VBoxContainer"]
 offset_right = 256.0
 offset_bottom = 53.0
 size_flags_horizontal = 10
-theme_override_constants/separation = 27
+theme = ExtResource("1_kpe42")
+theme_override_constants/separation = 14
 script = ExtResource("1_20gnx")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Node2D"]
+custom_minimum_size = Vector2(0, 64)
+offset_left = -342.0
+offset_top = -11.0
+offset_right = 1164.0
+offset_bottom = 111.0
+color = Color(0.933333, 0.890196, 1, 1)
 
 [node name="Container" type="HBoxContainer" parent="."]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Container"]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 26
 text = "Track "
+text_overrun_behavior = 3
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Container"]
 layout_mode = 2
@@ -26,7 +41,6 @@ text = "hehehe"
 edit_alpha = false
 
 [node name="SpinBox" type="SpinBox" parent="Container"]
-modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 min_value = 0.25
 max_value = 2.0
@@ -37,12 +51,12 @@ suffix = "x"
 [node name="NoteTextureButton" type="Button" parent="Container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
-text = "Note Texture"
+text = "Note Image"
 
 [node name="NoteEffectButton" type="Button" parent="Container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
-text = "Note on Texture"
+text = "Note on Image"
 
 [node name="FileDialog" type="FileDialog" parent="Container"]
 title = "Open a File"
@@ -69,6 +83,18 @@ texture = ExtResource("2_fjert")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="NoteEffectPreview2" type="TextureRect" parent="Container/NoteEffectPreview"]
+self_modulate = Color(1.3, 1.3, 1.3, 1)
+show_behind_parent = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+texture = ExtResource("3_a1vf2")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="CheckBox" type="CheckBox" parent="Container"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -92,7 +118,7 @@ theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Don't color"
+text = "No color"
 alignment = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
@@ -124,7 +150,12 @@ scrollable = false
 
 [connection signal="color_changed" from="Container/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
 [connection signal="value_changed" from="Container/SpinBox" to="." method="_on_spin_box_value_changed"]
-[connection signal="pressed" from="Container/NoteTextureButton" to="." method="_on_note_texture_button_pressed"]
+[connection signal="gui_input" from="Container/NoteTextureButton" to="." method="_on_note_texture_button_gui_input"]
+[connection signal="mouse_entered" from="Container/NoteTextureButton" to="." method="_on_note_texture_button_mouse_entered"]
+[connection signal="mouse_exited" from="Container/NoteTextureButton" to="." method="_on_note_texture_button_mouse_exited"]
+[connection signal="gui_input" from="Container/NoteEffectButton" to="." method="_on_note_effect_button_gui_input"]
+[connection signal="mouse_entered" from="Container/NoteEffectButton" to="." method="_on_note_effect_button_mouse_entered"]
+[connection signal="mouse_exited" from="Container/NoteEffectButton" to="." method="_on_note_effect_button_mouse_exited"]
 [connection signal="pressed" from="Container/NoteEffectButton" to="." method="_on_note_effect_button_pressed"]
 [connection signal="file_selected" from="Container/FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="file_selected" from="Container/FileDialog2" to="." method="_on_file_dialog_2_file_selected"]

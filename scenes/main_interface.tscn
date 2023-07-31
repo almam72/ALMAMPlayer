@@ -1,8 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://c67cg0gwkl383"]
+[gd_scene load_steps=6 format=3 uid="uid://c67cg0gwkl383"]
 
+[ext_resource type="Theme" uid="uid://cfni7mm2mqusg" path="res://assets/main_interface.tres" id="1_7w4np"]
 [ext_resource type="Script" path="res://scripts/main_interface.gd" id="1_v86r2"]
 [ext_resource type="Texture2D" uid="uid://df6uqumd68lfc" path="res://assets/sprites/black.png" id="2_vb6hc"]
 [ext_resource type="Script" path="res://scripts/preview.gd" id="3_h8nuy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bhba"]
+bg_color = Color(0.968627, 0.968627, 0.968627, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 12
+border_width_bottom = 8
+border_color = Color(0.52549, 0.380392, 0.462745, 0.596078)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -11,24 +25,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_7w4np")
 script = ExtResource("1_v86r2")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = -29.0
-offset_top = -18.0
-offset_right = 1965.0
-offset_bottom = 1097.0
-color = Color(0.972549, 0.929412, 0.792157, 1)
+offset_left = -27371.0
+offset_top = -7646.0
+offset_right = 30075.0
+offset_bottom = 9273.0
+color = Color(1, 0.996078, 0.988235, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 50
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 36
 
 [node name="HSplitContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -36,6 +54,34 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="NewConfigButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "New config"
+
+[node name="LoadConfigButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Load config"
+
+[node name="SaveConfigButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Save config"
+
+[node name="SaveAsConfigButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Save as..."
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
@@ -102,41 +148,49 @@ value = 0.5
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_2bhba")
 
 [node name="ColorContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ResetColorsButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="ResetColorsButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
 text = "Reset Colors"
 
-[node name="ResetParallaxButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="ResetParallaxButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
 text = "Reset Parallax"
 
-[node name="ResetNoteTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="ResetNoteTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
 text = "Reset Texture"
 
-[node name="ResetNoteEffectTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="ResetNoteEffectTextureButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
 theme_override_font_sizes/font_size = 32
-text = " Reset \"note on\" "
+text = " Reset \"note on\""
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2
@@ -161,13 +215,37 @@ position = Vector2(0, 540)
 unique_name_in_owner = true
 position = Vector2(0, -438)
 points = PackedVector2Array(0, 0, 960, 0)
-default_color = Color(1, 0.266667, 0.435294, 1)
+width = 24.0
+default_color = Color(0.980469, 0.730469, 0.347656, 1)
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor/TopMargin"]
+offset_left = 883.0
+offset_top = -17.0
+offset_right = 961.0
+offset_bottom = 25.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "1000"
+fit_content = true
+scroll_active = false
 
 [node name="BottomMargin" type="Line2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor"]
 unique_name_in_owner = true
 position = Vector2(0, -102)
-points = PackedVector2Array(0, 0, 960, 0)
-default_color = Color(1, 0.266667, 0.435294, 1)
+points = PackedVector2Array(0, 0, 407.941, 0, 960, 0)
+width = 24.0
+default_color = Color(0.980469, 0.730469, 0.347656, 1)
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor/BottomMargin"]
+offset_left = 883.0
+offset_top = -17.0
+offset_right = 961.0
+offset_bottom = 25.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "1000"
+fit_content = true
+scroll_active = false
 
 [node name="Sizer" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(960, 0)
@@ -188,6 +266,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer"]
 modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Speed/Zoom"
 
@@ -240,13 +319,13 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TopMarginSliderContainer"]
 modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Top Margin"
 
 [node name="TopMarginSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TopMarginSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 48.0
 max_value = 1080.0
 value = 880.0
 
@@ -256,13 +335,14 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VerticalOffsetSliderContainer"]
 modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Bottom Margin"
 
 [node name="VerticalOffsetSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VerticalOffsetSliderContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = -1024.0
+min_value = -1080.0
 max_value = 0.0
 value = -192.0
 
@@ -272,10 +352,14 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer"]
 modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Offset Audio"
 
-[node name="AudioOffsetSlider" type="SpinBox" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer"]
+layout_mode = 2
+
+[node name="AudioOffsetSlider" type="SpinBox" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -286,18 +370,24 @@ allow_greater = true
 allow_lesser = true
 update_on_text_changed = true
 
+[node name="RichTextLabel3" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 28
+text = "seconds"
+fit_content = true
+
 [node name="PreviewButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 34
 text = "Preview Video"
 
 [node name="ExportButton2" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_colors/font_color = Color(1, 0.968627, 0.921569, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 34
 text = "Export Video"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -324,6 +414,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer"]
 modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Velocity force"
 
@@ -340,6 +431,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer"]
 modulate = Color(0.423529, 0, 0.0980392, 1)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Pitch bend lvl"
 
@@ -357,6 +449,45 @@ theme_override_font_sizes/normal_font_size = 27
 text = "^ if u dont want any velocity/pitch bend visualization set these all the way to the left"
 fit_content = true
 
+[node name="Control" type="Control" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/Control"]
+layout_mode = 2
+offset_left = 4.0
+offset_right = 428.0
+offset_bottom = 449.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 27
+text = "drag a .mid and a .mp3 file here !
+you can also add a background image if you like
+if a track is above another one in the list it will get drawn in front of it
+
+created by almam:)"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/Control"]
+layout_mode = 2
+offset_left = -25.0
+offset_right = -24.0
+offset_bottom = 449.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 28
+text = "you dont get an actual preview of the midi notes here sorry"
+
+[node name="MP3" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 4.0
+offset_top = 352.0
+offset_right = 406.0
+offset_bottom = 480.0
+theme_override_colors/default_color = Color(0.129412, 0.498039, 0.321569, 1)
+theme_override_font_sizes/normal_font_size = 22
+text = "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+autowrap_mode = 1
+
 [node name="Preview" type="Node2D" parent="."]
 position = Vector2(912, 598)
 scale = Vector2(0.5, 0.5)
@@ -373,7 +504,7 @@ autostart = true
 [node name="SetAllNotesTextureFileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
 title = "Open a File"
-position = Vector2i(360, 203)
+initial_position = 2
 size = Vector2i(1200, 675)
 ok_button_text = "Open"
 file_mode = 0
@@ -383,7 +514,7 @@ filters = PackedStringArray("*.png")
 [node name="SetAllEffectsTextureFileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
 title = "Open a File"
-position = Vector2i(360, 203)
+initial_position = 2
 size = Vector2i(1200, 675)
 ok_button_text = "Open"
 file_mode = 0
@@ -392,79 +523,81 @@ filters = PackedStringArray("*.png")
 
 [node name="ExportVideo" type="FileDialog" parent="."]
 unique_name_in_owner = true
-position = Vector2i(360, 203)
+initial_position = 2
 size = Vector2i(1200, 675)
 access = 2
 filters = PackedStringArray("*.avi")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 1488.0
-offset_top = 608.0
-offset_right = 1912.0
-offset_bottom = 1072.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 27
-text = "drag a .mid and a .mp3 file here !
-you can also add a background image if you like
-if a track is above another one in the list it will get drawn in front of it
-
-created by almam:)"
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 885.0
-offset_right = 1191.0
-offset_bottom = 926.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 28
-text = "seconds"
-
-[node name="MP3" type="RichTextLabel" parent="."]
+[node name="SaveBeforeNewDialog" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1232.0
-offset_top = 1008.0
-offset_right = 1914.0
-offset_bottom = 1071.0
-theme_override_colors/default_color = Color(0.129412, 0.498039, 0.321569, 1)
-theme_override_font_sizes/normal_font_size = 22
+initial_position = 2
+size = Vector2i(399, 100)
+ok_button_text = "Save"
+dialog_text = "Save current changes (if any idk sorry) before creating new config?"
+cancel_button_text = "Discard changes"
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 1032.0
-offset_top = 9.0
-offset_right = 1888.0
-offset_bottom = 473.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 28
-text = "you dont get an actual preview of the midi notes here sorry"
+[node name="SaveBeforeQuit" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+initial_position = 2
+size = Vector2i(399, 100)
+ok_button_text = "Save"
+dialog_text = "Save changes (if any idk sorry) before quitting?"
+cancel_button_text = "Discard changes"
+
+[node name="SaveConfig" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Save config as..."
+initial_position = 2
+size = Vector2i(1200, 675)
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="CreateNewConfig" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Create new config..."
+initial_position = 2
+size = Vector2i(1200, 675)
+access = 2
+filters = PackedStringArray("*.json")
 
 [node name="LoadSongFileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
-initial_position = 1
-title = "Open Song File(s)"
+title = "Open File(s)"
+initial_position = 2
 size = Vector2i(1200, 675)
 ok_button_text = "Open"
 file_mode = 1
 access = 2
 
+[node name="LoadConfigDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a File"
+initial_position = 2
+size = Vector2i(1200, 675)
+ok_button_text = "Load config"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json")
+
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/NewConfigButton" to="." method="_on_new_config_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/LoadConfigButton" to="." method="_on_load_config_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/SaveConfigButton" to="." method="_on_save_config_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/SaveAsConfigButton" to="." method="_on_save_as_config_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer2/NoteTextureButton" to="." method="_on_note_texture_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer2/EffectTextureButton" to="." method="_on_effect_texture_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3/LeftMarginButton" to="." method="set_all_notes_left_margin"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3/RightMarginButton" to="." method="set_all_notes_right_margin"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer4/NoteLengthSlider" to="." method="_on_note_length_slider_value_changed"]
-[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/ResetColorsButton" to="." method="_on_reset_colors_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/ResetParallaxButton" to="." method="_on_reset_parallax_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/ResetNoteTextureButton" to="." method="_on_reset_note_texture_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/ResetNoteEffectTextureButton" to="." method="_on_reset_note_effect_texture_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer/ResetColorsButton" to="." method="_on_reset_colors_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer/ResetParallaxButton" to="." method="_on_reset_parallax_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2/ResetNoteTextureButton" to="." method="_on_reset_note_texture_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2/ResetNoteEffectTextureButton" to="." method="_on_reset_note_effect_texture_button_pressed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer/SpeedSlider" to="." method="_on_speed_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSpacingSliderContainer/NoteSpacingSlider" to="." method="_on_note_spacing_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSizeSliderContainer/NoteSizeSlider" to="." method="_on_note_size_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TopMarginSliderContainer/TopMarginSlider" to="." method="_on_top_margin_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VerticalOffsetSliderContainer/VerticalOffsetSlider" to="." method="_on_vertical_offset_slider_value_changed"]
-[connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/AudioOffsetSlider" to="." method="_on_audio_offset_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/HBoxContainer/AudioOffsetSlider" to="." method="_on_audio_offset_slider_value_changed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExportButton2" to="." method="_on_export_button_pressed"]
 [connection signal="toggled" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer/SquareToggle" to="." method="_on_square_toggle_toggled"]
@@ -474,4 +607,11 @@ access = 2
 [connection signal="file_selected" from="SetAllNotesTextureFileDialog" to="." method="_on_set_all_notes_texture_file_dialog_file_selected"]
 [connection signal="file_selected" from="SetAllEffectsTextureFileDialog" to="." method="_on_set_all_effects_texture_file_dialog_file_selected"]
 [connection signal="file_selected" from="ExportVideo" to="." method="_on_export_video_file_selected"]
+[connection signal="canceled" from="SaveBeforeNewDialog" to="." method="_on_save_before_new_dialog_canceled"]
+[connection signal="confirmed" from="SaveBeforeNewDialog" to="." method="_on_save_before_new_dialog_confirmed"]
+[connection signal="canceled" from="SaveBeforeQuit" to="." method="_on_save_before_quit_canceled"]
+[connection signal="confirmed" from="SaveBeforeQuit" to="." method="_on_save_before_quit_confirmed"]
+[connection signal="file_selected" from="SaveConfig" to="." method="_on_save_config_file_selected"]
+[connection signal="file_selected" from="CreateNewConfig" to="." method="_on_create_new_config_file_selected"]
 [connection signal="files_selected" from="LoadSongFileDialog" to="." method="_on_load_song_file_dialog_files_selected"]
+[connection signal="file_selected" from="LoadConfigDialog" to="." method="_on_load_config_dialog_file_selected"]

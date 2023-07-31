@@ -34,9 +34,18 @@ var midi_player_change:bool = false
 var smf_data:SMF.SMFData = null
 
 func _ready():
+	get_tree().set_auto_accept_quit(false)
+	get_tree().get_root().connect("files_dropped", self._on_files_dropped)
+	update_sliders()
 #	if not GlobalVariables.colors.has(str(track.number)):
 #		load_json()
-#	happy_slider.value = GlobalVariables.happiness
+#	happy_slider.value = GlobalVariables.audio_offset
+
+#	load_json("")
+#	get_tree().files_dropped.connect(self._on_files_dropped())
+
+
+func update_sliders():
 	note_size_slider.value = GlobalVariables.note_size
 	speed_slider.value = GlobalVariables.speed
 	velocity_slider.value = GlobalVariables.velocity_strength
@@ -44,16 +53,15 @@ func _ready():
 	note_spacing_slider.value = GlobalVariables.note_spacing
 	vertical_offset_slider.value = GlobalVariables.vertical_offset
 	top_margin_slider.value = GlobalVariables.top_margin
-	audio_offset_slider.value = GlobalVariables.happiness
+	audio_offset_slider.value = GlobalVariables.audio_offset
 	load_image(GlobalVariables.background_path)
 	MP3.text = GlobalVariables.sound_path + " loaded"
 	if GlobalVariables.json_path != null:
 		load_midi(GlobalVariables.json_path)
-#	load_json("")
-#	get_tree().files_dropped.connect(self._on_files_dropped())
-	get_tree().get_root().connect("files_dropped", self._on_files_dropped)
-	
+
 func _input(event):
+	if Input.is_action_just_pressed("save"):
+		GlobalVariables.save_settings()
 	if Input.is_action_just_pressed("open_file"):
 		$%LoadSongFileDialog.show()
 
@@ -68,9 +76,13 @@ func load_song(file):
 		var was_inside = false
 		await get_tree().create_timer(0.1).timeout
 		for track in color_container.get_children():
-			if track.mouse_inside:
+			if track.mouse_inside_note:
 				track.note_texture = file
 				track.apply_note_texture()
+				was_inside = true
+			if track.mouse_inside_noteon:
+				track.note_effect_texture = file
+				track.apply_note_effect_texture()
 				was_inside = true
 		if not was_inside:
 			load_image(file)
@@ -107,25 +119,40 @@ func load_midi(midi_path):
 #	bpm = midi_json["header"]["tempos"][0]["bpm"]
 	var track_number = 0
 	track_number = 0
-	
+#	print(smf_data)
 	for track in smf_data.tracks:
 		var has_notes = false
 		if track.events.size() == 0:
 			continue
+		var track_name = "Track"
+			
 		for note in track.events:
+			if note.event.type == 240:
+				if "text" in note.event.args:
+				
+#					print(note.event.args["type"])
+					track_name = note.event.args["text"]
+#				print(note.event.args["text"])
 			if note.event.type == 144:
+
 				has_notes = true
+#			print(note.event.type)
+#			if note.event.type == 3:
+#			if "text" in note.event:
+#				print(note.event.text.to_ascii_buffer())
+
 #			print(note.event.type)
 		if not has_notes:
 			continue
 		track_number += 1
 			
 		var track_color_instance = track_color_scene.instantiate()
+		track_color_instance.text = track_name
 		color_container.add_child(track_color_instance)
 	track_number = 0
 	var number_of_tracks = color_container.get_child_count()
 	for track in color_container.get_children():
-		track.text = "Track " + str(track_number) + " " 
+#		track.text = "Track " + str(track_number) + " " 
 #		print((1.75 / number_of_tracks * track_number) + 0.25)
 		track.number = track_number
 		if not GlobalVariables.dont_color.has(str(track.number)):
@@ -171,7 +198,7 @@ func load_midi(midi_path):
 #			print(note.event.type)
 		if not has_notes:
 			continue
-			
+#		print(track)
 		for note in track.events:
 			if note.event.type == 144:
 				add_note_to_array(note.event.note, track_number)
@@ -207,7 +234,7 @@ func load_midi(midi_path):
 	GlobalVariables.note_range = note_range
 	GlobalVariables.bottom_note = note_min
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 #func load_json(json_path):
 #	var file = File.new()
@@ -287,7 +314,7 @@ func load_midi(midi_path):
 #	GlobalVariables.note_range = note_range
 #	GlobalVariables.bottom_note = note_min
 #	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
-#	GlobalVariables.save_settings()
+#	#GlobalVariables.save_settings()
 	
 	
 func add_note_to_array(note, track_number):
@@ -305,7 +332,7 @@ func add_note_to_array(note, track_number):
 func load_sound(file):
 	GlobalVariables.sound_path = file
 	MP3.text = file + " loaded"
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 func load_image(file):
 #	var image = Image.new()
@@ -313,14 +340,15 @@ func load_image(file):
 #	if err != OK:
 #		# Failed
 #		print("error loading image :(")
-	background.texture = ImageTexture.create_from_image(Image.load_from_file(file))
+	if GlobalVariables.background_path != "res://assets/sprites/black_image.png":
+		background.texture = ImageTexture.create_from_image(Image.load_from_file(file))
 #	background.texture = ImageTexture.new()
 #	background.texture.create_from_image(image)
 	GlobalVariables.background_path = file
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 func _on_preview_button_pressed():
-	OS.create_process(OS.get_executable_path(), ["res://scenes/BUG.tscn", GlobalVariables.background_path])
+	OS.create_process(OS.get_executable_path(), ["res://scenes/BUG.tscn", GlobalVariables.background_path, "--", "--loaded_config=" + GlobalVariables.loaded_settings_path])
 
 func _on_export_button_pressed():
 	$%ExportVideo.show()
@@ -332,27 +360,29 @@ func _on_export_button_pressed():
 #	ProjectSettings.save()
 	
 func _on_h_slider_value_changed(value):
-	GlobalVariables.happiness = value
-	GlobalVariables.save_settings()
+	GlobalVariables.audio_offset = value
+	#GlobalVariables.save_settings()
 
 func _on_speed_slider_value_changed(value):
 	GlobalVariables.speed = value
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 func _on_note_spacing_slider_value_changed(value):
 #	GlobalVariables.note_spacing = value
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
+	pass
 
 func _on_vertical_offset_slider_value_changed(value):
 	$%BottomMargin.position.y = value / 2
 	GlobalVariables.vertical_offset = value
-	GlobalVariables.save_settings()
+	$%BottomMargin/Label.text = str(value)
+	#GlobalVariables.save_settings()
 	update_note_spacing()
 	
 
 func _on_note_size_slider_value_changed(value):
 	GlobalVariables.note_size = value
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 func _on_square_toggle_toggled(button_pressed):
 	GlobalVariables.square_ratio = button_pressed
@@ -360,7 +390,7 @@ func _on_square_toggle_toggled(button_pressed):
 		$%Background.custom_minimum_size.x = 540
 	else:
 		$%Background.custom_minimum_size.x = 960
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 
 func _on_reset_colors_button_pressed():
@@ -385,13 +415,14 @@ func _on_reset_parallax_button_pressed():
 
 func update_note_spacing():
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / GlobalVariables.note_range
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 
 func _on_top_margin_slider_value_changed(value):
 	$%TopMargin.position.y = value / 2 * -1
 	GlobalVariables.top_margin = value
-	GlobalVariables.save_settings()
+	$%TopMargin/Label.text = str(value)
+	#GlobalVariables.save_settings()
 	update_note_spacing()
 
 
@@ -450,7 +481,7 @@ func set_all_notes_left_margin():
 	for track in color_container.get_children():
 #		track.number = track_number
 		GlobalVariables.note_texture_margins[str(track_number)] = Vector2(value, GlobalVariables.note_texture_margins[str(track_number)].y)
-		GlobalVariables.save_settings()
+		#GlobalVariables.save_settings()
 		track.apply_note_margins()
 		track_number += 1
 		
@@ -462,18 +493,18 @@ func set_all_notes_right_margin():
 	for track in color_container.get_children():
 #		track.number = track_number
 		GlobalVariables.note_texture_margins[str(track_number)] = Vector2(GlobalVariables.note_texture_margins[str(track_number)].x, value)
-		GlobalVariables.save_settings()
+		#GlobalVariables.save_settings()
 		track.apply_note_margins()
 		track_number += 1
 
 
 func _on_export_video_file_selected(path):
-	OS.create_process(OS.get_executable_path(), ["res://scenes/BUG.tscn", GlobalVariables.background_path, "--write-movie", path])
+	OS.create_process(OS.get_executable_path(), ["res://scenes/BUG.tscn", GlobalVariables.background_path, "--write-movie", path, "--", "--loaded_config=" + GlobalVariables.loaded_settings_path])
 
 
 func _on_audio_offset_slider_value_changed(value):
-	GlobalVariables.happiness = value
-	GlobalVariables.save_settings()
+	GlobalVariables.audio_offset = value
+	#GlobalVariables.save_settings()
 
 
 func _on_note_length_slider_value_changed(value):
@@ -483,10 +514,61 @@ func _on_note_length_slider_value_changed(value):
 
 func _on_velocity_slider_value_changed(value):
 	GlobalVariables.velocity_strength = value
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
 
 func _on_pitch_bend_slider_value_changed(value):
 	GlobalVariables.pitch_bend_strength = value
-	GlobalVariables.save_settings()
+	#GlobalVariables.save_settings()
 
+
+
+func _on_save_config_button_pressed():
+	GlobalVariables.save_settings()
+	
+
+
+func _on_new_config_button_pressed():
+	%SaveBeforeNewDialog.show()
+
+func _on_save_as_config_button_pressed():
+	%SaveConfig.show()
+
+func _on_save_config_file_selected(path):
+	GlobalVariables.save_settings(path)
+	GlobalVariables.load_settings(path)
+	
+
+func _on_save_before_new_dialog_confirmed():
+	#GlobalVariables.save_settings()
+	%CreateNewConfig.show()
+
+func _on_save_before_new_dialog_canceled():
+	%CreateNewConfig.show()
+
+func _on_create_new_config_file_selected(path):
+	GlobalVariables.load_settings(GlobalVariables.default_settings_path)
+	GlobalVariables.save_settings(path)
+	GlobalVariables.load_settings(path)
+	update_sliders()
+
+
+func _on_load_config_button_pressed():
+	%LoadConfigDialog.show()
+
+func _on_load_config_dialog_file_selected(path):
+	GlobalVariables.load_settings(path)
+	update_sliders()
+	
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		%SaveBeforeQuit.show()
+
+func _on_save_before_quit_confirmed():
+	GlobalVariables.save_settings()
+	await get_tree().create_timer(0.1).timeout
+	get_tree().quit()
+
+
+func _on_save_before_quit_canceled():
+	get_tree().quit()

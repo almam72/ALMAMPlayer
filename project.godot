@@ -14,10 +14,11 @@ config/name="ALMAMPlayer"
 run/main_scene="res://scenes/main_interface.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="ALMAMPlayer"
-config/features=PackedStringArray("4.0")
+config/features=PackedStringArray("4.1")
 boot_splash/bg_color=Color(0.886275, 0.862745, 0.607843, 1)
 boot_splash/image="res://assets/sprites/splash.png"
 config/icon="res://icon.png"
+boot_splash/minimum_display_time=100
 
 [audio]
 
@@ -39,7 +40,9 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/window_width_override=1280
 window/size/window_height_override=720
-window/stretch/mode="viewport"
+window/subwindows/embed_subwindows=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_height"
 
 [editor]
 
@@ -53,6 +56,9 @@ enabled=PackedStringArray("res://addons/midi/plugin.cfg")
 
 [gui]
 
+theme/default_font_antialiasing=2
+theme/default_font_hinting=0
+theme/default_font_subpixel_positioning=3
 theme/default_font_multichannel_signed_distance_field=true
 theme/default_font_generate_mipmaps=true
 
@@ -90,6 +96,11 @@ fullscreen={
 open_file={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":79,"key_label":0,"unicode":111,"echo":false,"script":null)
+]
+}
+save={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 

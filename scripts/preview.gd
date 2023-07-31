@@ -10,6 +10,7 @@ var current_note = 0
 
 func _ready():
 	return
+	@warning_ignore("unreachable_code")
 	bpm = GlobalVariables.speed
 	var file = File.new()
 		

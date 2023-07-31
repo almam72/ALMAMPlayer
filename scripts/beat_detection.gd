@@ -28,6 +28,15 @@ var smf_data:SMF.SMFData = null
 var delay = 0.5
 
 func _ready():
+	var arguments = {}
+	for argument in OS.get_cmdline_user_args():
+		if argument.find("=") > -1:
+			var key_value = argument.split("=")
+			arguments[key_value[0].lstrip("--")] = key_value[1]
+		else:
+			arguments[argument.lstrip("--")] = ""
+	printerr(arguments["loaded_config"])
+	GlobalVariables.load_settings(arguments["loaded_config"])
 #	print(GlobalVariables.square_ratio)
 	if GlobalVariables.square_ratio:
 #		ProjectSettings.set_setting("display/window/size/viewport_width", 1080)
@@ -273,6 +282,9 @@ func load_background_image(file):
 #	if err != OK:
 #		# Failed
 #		print("error loading image :(")
+
+	if file == "res://assets/sprites/black_image.png":
+		return
 	background.texture = ImageTexture.create_from_image(Image.load_from_file(file))
 #	background.texture.create_from_image(image)
 	$Camera2D/BackgroundImageSquare.texture = background.texture
@@ -286,9 +298,9 @@ func start():
 		dance(dance_notes[note])
 	
 	await get_tree().create_timer(delay).timeout
-	if not compare_floats(0, GlobalVariables.happiness):
-		if GlobalVariables.happiness > 0:
-			await get_tree().create_timer(GlobalVariables.happiness).timeout
+	if not compare_floats(0, GlobalVariables.audio_offset):
+		if GlobalVariables.audio_offset > 0:
+			await get_tree().create_timer(GlobalVariables.audio_offset).timeout
 			
 		
 	$AudioStreamPlayer.play()
@@ -332,8 +344,8 @@ func add_pitchbend_to_array(time, value, track_number):
 			
 
 func add_note_to_array(note, track_number, velocity = 1):
-	if not compare_floats(0, GlobalVariables.happiness) && GlobalVariables.happiness > 0:
-#		var time = str(note["time"] + 0.5 + abs(GlobalVariables.happiness))
+	if not compare_floats(0, GlobalVariables.audio_offset) && GlobalVariables.audio_offset > 0:
+#		var time = str(note["time"] + 0.5 + abs(GlobalVariables.audio_offset))
 #		if not notes.has(time):
 #			notes[time] = []
 		notes.append([note["midi"], note["duration"], note["time"], track_number, velocity])
@@ -342,7 +354,7 @@ func add_note_to_array(note, track_number, velocity = 1):
 #		var time = str(note["time"] + 0.5)
 #		if not notes.has(time):
 #			notes[time] = []
-		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.happiness), track_number, velocity])
+		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.audio_offset), track_number, velocity])
 		
 #	var time = str(note["time"])
 	
