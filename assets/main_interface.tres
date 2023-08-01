@@ -1,10 +1,12 @@
-[gd_resource type="Theme" load_steps=23 format=3 uid="uid://cfni7mm2mqusg"]
+[gd_resource type="Theme" load_steps=27 format=3 uid="uid://cfni7mm2mqusg"]
 
 [ext_resource type="Texture2D" uid="uid://dxguik1v3nxte" path="res://assets/sprites/slider.png" id="1_ob0s7"]
 [ext_resource type="Texture2D" uid="uid://bn4cspxrqm4hh" path="res://assets/sprites/slide_highlight.png" id="2_jyppk"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_2fxy4"]
 color = Color(0.945098, 0.584314, 0.231373, 1)
+grow_begin = 0.0
+grow_end = 0.0
 thickness = 8
 vertical = true
 
@@ -188,6 +190,48 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03b4d"]
+bg_color = Color(0.964844, 0.964844, 0.964844, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r3bj"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.996078, 0.803922, 0.623529, 1)
+border_width_bottom = 4
+border_color = Color(0.909804, 0.737255, 0.596078, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jlw2"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.94902, 0.45098, 0.223529, 1)
+border_width_bottom = 2
+border_color = Color(0.847059, 0.627451, 0.443137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uuuj"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.984314, 0.733333, 0.34902, 1)
+border_width_bottom = 4
+border_color = Color(0.909804, 0.737255, 0.596078, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5pub"]
 bg_color = Color(1, 0.34902, 0.321569, 1)
 border_width_bottom = 8
@@ -255,6 +299,10 @@ LineEdit/colors/font_color = Color(0, 0, 0, 1)
 LineEdit/font_sizes/font_size = 22
 LineEdit/styles/focus = SubResource("StyleBoxFlat_8q28a")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_oa882")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_03b4d")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_4r3bj")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_4jlw2")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_3uuuj")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_k5pub")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_y0p2x")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_r5gy8")

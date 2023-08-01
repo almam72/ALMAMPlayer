@@ -18,7 +18,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" groups=["MainInterface"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -462,7 +462,7 @@ offset_bottom = 449.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 27
 text = "drag a .mid and a .mp3 file here !
-you can also add a background image if you like
+you can also add a background image
 if a track is above another one in the list it will get drawn in front of it
 
 created by almam:)"
@@ -574,7 +574,7 @@ unique_name_in_owner = true
 title = "Open a File"
 initial_position = 2
 size = Vector2i(1200, 675)
-ok_button_text = "Load config"
+ok_button_text = "Open"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.json")

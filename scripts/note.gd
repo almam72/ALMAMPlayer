@@ -136,15 +136,15 @@ func _on_Timer_timeout():
 	new_color.b = texture_rext.modulate.b + 0.3
 	old_color = texture_rext.modulate
 	var tween = create_tween()
-	tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_parallel(true)
-	tween.tween_property(texture_rext, "modulate", new_color, 0.2)
+	tween.tween_property(texture_rext, "modulate", new_color, 0.17)
 	tween.tween_property(self, "scale",  scale * 1.03, 0.2).from(original_scale)
 	if GlobalVariables.velocity_strength < 0.01:
-		tween.tween_property(self, "position:y", position.y + 6, 0.2)
+		tween.tween_property(self, "position:y", position.y + 6, 0.17)
 	else:
-		tween.tween_property(self, "position:y", position.y + 0.25 + velocity * GlobalVariables.velocity_strength * 0.7, 0.2)
+		tween.tween_property(self, "position:y", position.y + 0.25 + velocity * GlobalVariables.velocity_strength * 0.7, 0.17)
 	if duration > 1:
 		$AnimationPlayer.play("fade")
 	play_note_effect()
@@ -192,12 +192,12 @@ func _on_DurationTimer_timeout():
 	tween.set_parallel(true)
 	var color_tween = create_tween()
 	color_tween.set_ease(Tween.EASE_IN_OUT)
-	color_tween.tween_property(texture_rext, "modulate", old_color, 0.3)
+	color_tween.tween_property(texture_rext, "modulate", old_color, 0.27)
 #	$Tween.interpolate_property(self, "scale", scale, original_scale * 0.01, 0.2, Tween.TRANS_SINE)
 	if GlobalVariables.velocity_strength < 0.01:
-		tween.tween_property(self, "position:y", position.y - 6, 0.2)
+		tween.tween_property(self, "position:y", position.y - 6, 0.27)
 	else:
-		tween.tween_property(self, "position:y", position.y - 0.25 - velocity * GlobalVariables.velocity_strength * 0.7, 0.2)
+		tween.tween_property(self, "position:y", position.y - 0.25 - velocity * GlobalVariables.velocity_strength * 0.7, 0.27)
 #	bend_to = 0
 
 	await get_tree().create_timer(1.2).timeout

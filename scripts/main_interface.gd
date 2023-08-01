@@ -36,13 +36,10 @@ var smf_data:SMF.SMFData = null
 func _ready():
 	get_tree().set_auto_accept_quit(false)
 	get_tree().get_root().connect("files_dropped", self._on_files_dropped)
-	update_sliders()
-#	if not GlobalVariables.colors.has(str(track.number)):
-#		load_json()
-#	happy_slider.value = GlobalVariables.audio_offset
-
-#	load_json("")
-#	get_tree().files_dropped.connect(self._on_files_dropped())
+#	ProjectSettings.set_setting("display/window/stretch/mode", "canvas_items")
+#	print(ProjectSettings.get_setting("display/window/stretch/mode"))
+#	get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+#	update_sliders()
 
 
 func update_sliders():
@@ -53,6 +50,8 @@ func update_sliders():
 	note_spacing_slider.value = GlobalVariables.note_spacing
 	vertical_offset_slider.value = GlobalVariables.vertical_offset
 	top_margin_slider.value = GlobalVariables.top_margin
+	$%TopMargin/Label.text = str(GlobalVariables.top_margin)
+	$%BottomMargin/Label.text = str(GlobalVariables.vertical_offset)
 	audio_offset_slider.value = GlobalVariables.audio_offset
 	load_image(GlobalVariables.background_path)
 	MP3.text = GlobalVariables.sound_path + " loaded"
@@ -64,8 +63,15 @@ func _input(event):
 		GlobalVariables.save_settings()
 	if Input.is_action_just_pressed("open_file"):
 		$%LoadSongFileDialog.show()
+	if event is InputEventMouseButton and event.pressed:
+		match event.button_index:
+			MOUSE_BUTTON_LEFT:
+				gradient_start = null
 
 func load_song(file):
+	if file.right(5) == ".json":
+		GlobalVariables.load_settings(file)
+		update_sliders()
 	if file.right(4) == ".mid":
 		load_midi(file)
 		
@@ -166,10 +172,10 @@ func load_midi(midi_path):
 			GlobalVariables.note_texture_margins[str(track_number)] = Vector2(12,12)
 			track.note_margins = Vector2(12,12)
 			GlobalVariables.staccato[str(track_number)] = false
-			if track_number == 10 || track_number == 11:
-				track.note_texture = "res://assets/sprites/note_staccato_image.png"
-				GlobalVariables.staccato[str(track_number)] = true
-				track.staccato = true
+#			if track_number == 10 || track_number == 11:
+#				track.note_texture = "res://assets/sprites/note_staccato_image.png"
+#				GlobalVariables.staccato[str(track_number)] = true
+#				track.staccato = true
 		else:
 			track.color = GlobalVariables.colors[str(track_number)]
 			track.parallax = GlobalVariables.parallax[str(track_number)]
@@ -236,98 +242,48 @@ func load_midi(midi_path):
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
 	#GlobalVariables.save_settings()
 
-#func load_json(json_path):
-#	var file = File.new()
-#	file.open(json_path, file.FileOpts.READ)
-#	var text = file.get_as_text()
-#	var json_var = JSON.new()
-#	var midi_json = json_var.parse(text)
-#	if midi_json == OK:
-#		midi_json = json_var.get_data()
-#	file.close()
-#
-#	GlobalVariables.json_path = json_path
-#
+var gradient_start = null
+
+func create_gradient(to_track):
 #	for track in color_container.get_children():
-#		track.free()
-##	bpm = midi_json["header"]["tempos"][0]["bpm"]
-#	var track_number = 0
-#	track_number = 0
-#	for track in midi_json["tracks"]:
-#		if track["notes"].size() == 0:
-#			continue
-#		var track_color_instance = track_color_scene.instantiate()
-#		color_container.add_child(track_color_instance)
-#		track_number += 1
-#	track_number = 0
-#	var number_of_tracks = color_container.get_child_count()
-#	for track in color_container.get_children():
-#		track.text = "Track " + str(track_number) + " " 
-##		print((1.75 / number_of_tracks * track_number) + 0.25)
-#		track.number = track_number
-#		if not GlobalVariables.colors.has(str(track.number)):
-#			track.color = Color.from_hsv(1.0 / number_of_tracks * track_number, 0.62 + float((track_number+1)) / float((number_of_tracks+1) * 4), 0.92 - float((track_number+1)) / float((number_of_tracks+1) * 4), 1.0)
-#			track.parallax = (1.2 / number_of_tracks * (number_of_tracks - track_number)) + 0.6
-#			track.note_texture = "res://assets/sprites/note_texture.png"
-#			track.note_effect_texture = "res://assets/sprites/note_effect_texture.png"
-#			GlobalVariables.note_texture_margins[str(track_number)] = Vector2(12,12)
-#			track.note_margins = Vector2(12,12)
-#			GlobalVariables.staccato[str(track_number)] = false
-#			if track_number == 4 || track_number == 1:
-#				track.note_texture = "res://assets/sprites/note_staccato_image.png"
-#				GlobalVariables.staccato[str(track_number)] = true
-#				track.staccato = true
-#		else:
-#			track.color = GlobalVariables.colors[str(track_number)]
-#			track.parallax = GlobalVariables.parallax[str(track_number)]
-#			track.note_texture = GlobalVariables.note_texture[str(track_number)]
-#			track.note_effect_texture = GlobalVariables.note_effect_texture[str(track_number)]
-#			track.note_margins = GlobalVariables.note_texture_margins[str(track_number)]
-#			track.staccato = GlobalVariables.staccato[str(track_number)]
-#		track.apply_note_texture()
 #		track.apply_color()
-#		track.apply_parallax()
-#		track.apply_note_effect_texture()
-#		track.apply_note_margins()
-#		track.apply_staccato()
-#		track_number += 1
-#	track_number = 0
-#
-#
-#	for track in midi_json["tracks"]:
-#		if track["notes"].size() == 0:
-#			continue
-##			print(track)
-#		for note in track["notes"]:
-#			add_note_to_array(note, track_number)
-#		track_number += 1
-#
-#	track_number = 0
-#	var note_min = 128
-#	var note_max = 0
-#	for note in notes:
-#		if notes[note][0][0] > note_max:
-#			note_max = notes[note][0][0]
-#		if notes[note][0][0] < note_min:
-#			note_min = notes[note][0][0]
-#	var note_range = note_max - note_min
-#	GlobalVariables.note_range = note_range
-#	GlobalVariables.bottom_note = note_min
-#	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
-#	#GlobalVariables.save_settings()
-	
+	var start_tween = get_tree().create_tween()
+	start_tween.tween_property(color_container.get_child(gradient_start).get_node("Container/GradientStart"), "scale", Vector2(0.0, 0.0), 0.5)
+	GlobalVariables.save_settings()
+	var from_track = gradient_start
+	if from_track == to_track:
+		gradient_start = null
+		
+		return
+		
+	if from_track > to_track:
+		var from = from_track
+		from_track = to_track
+		to_track = from
+	var tracks_to_color = color_container.get_children().slice(from_track, to_track + 1)
+	var number_of_tracks = to_track - from_track
+	var h_diff = wrapf((color_container.get_child(to_track).color.h - color_container.get_child(from_track).color.h), -0.5, 0.5) / number_of_tracks
+	var s_diff = (color_container.get_child(to_track).color.s - color_container.get_child(from_track).color.s) / number_of_tracks
+	var v_diff = (color_container.get_child(to_track).color.v - color_container.get_child(from_track).color.v) / number_of_tracks
+#	print( color_container.get_child(from_track).color.h)
+	var i = 0
+	var starting_color = color_container.get_child(from_track).color
+	for track in tracks_to_color:
+		track.color.h = starting_color.h + h_diff * i
+		track.color.s = starting_color.s + s_diff * i
+		track.color.v = starting_color.v + v_diff * i
+		GlobalVariables.colors[str(from_track + i)] = track.color
+		await get_tree().create_timer(0.05).timeout
+#		track.color = Color(starting_color.h + (h_diff * i), starting_color.s + (s_diff * i), starting_color.v + (v_diff * i))
+		i += 1
+		track.apply_color()
+		
+	gradient_start = null
+
 	
 func add_note_to_array(note, track_number):
 	notes.append([note, track_number])
 		
-#func add_note_to_array(note, track_number):
-##	return
-#	var time = str(note["time"] + 1.3)
-#
-#	if not notes.has(time):
-#		notes[time] = []
-#
-#	notes[time].append([note["midi"], note["duration"], note["time"] + 1.3, track_number])
 
 func load_sound(file):
 	GlobalVariables.sound_path = file
@@ -348,16 +304,12 @@ func load_image(file):
 	#GlobalVariables.save_settings()
 
 func _on_preview_button_pressed():
+	GlobalVariables.save_settings()
 	OS.create_process(OS.get_executable_path(), ["res://scenes/BUG.tscn", GlobalVariables.background_path, "--", "--loaded_config=" + GlobalVariables.loaded_settings_path])
 
 func _on_export_button_pressed():
+	GlobalVariables.save_settings()
 	$%ExportVideo.show()
-#	if GlobalVariables.square_ratio:
-#		ProjectSettings.set_setting("display/window/size/viewport_width", 1080)
-#		ProjectSettings.save()
-	
-#	ProjectSettings.set_setting("display/window/size/viewport_width", 1920)
-#	ProjectSettings.save()
 	
 func _on_h_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
@@ -550,6 +502,7 @@ func _on_create_new_config_file_selected(path):
 	GlobalVariables.load_settings(GlobalVariables.default_settings_path)
 	GlobalVariables.save_settings(path)
 	GlobalVariables.load_settings(path)
+	
 	update_sliders()
 
 
@@ -562,6 +515,8 @@ func _on_load_config_dialog_file_selected(path):
 	
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		GlobalVariables.save_other_settings()
+		
 		%SaveBeforeQuit.show()
 
 func _on_save_before_quit_confirmed():

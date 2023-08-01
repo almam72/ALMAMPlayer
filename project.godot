@@ -41,8 +41,7 @@ window/size/viewport_height=1080
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/subwindows/embed_subwindows=false
-window/stretch/mode="canvas_items"
-window/stretch/aspect="keep_height"
+window/stretch/mode="viewport"
 
 [editor]
 

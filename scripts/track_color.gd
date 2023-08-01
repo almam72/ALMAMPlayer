@@ -21,21 +21,31 @@ var dont_color = false
 @onready var note_effect_preview = $Container/NoteEffectPreview
 
 func _ready():
-	set_note_texture()	
+	set_note_texture()
 	texture_rect.custom_minimum_size = texture_rect.texture.get_size()
 	await get_tree().process_frame
 	if number % 2 == 1:
 		color_rect.color = Color("#eee3ff")
 	else:
 		color_rect.color = Color("#ffe6c2")
+	await get_tree().create_timer(number * 0.04).timeout
+	$AnimationPlayer.play("start")
+	
+		
 func apply_color():
 	$Container/Label.text = text
-	$Container/ColorPickerButton.color = color
-	texture_rect.self_modulate = color
-	if not GlobalVariables.dont_color[str(number)]:
-		note_effect_preview.self_modulate = color
+#	$Container/ColorPickerButton.color = color
+#	texture_rect.self_modulate = color
+#	if not GlobalVariables.dont_color[str(number)]:
+#		note_effect_preview.self_modulate = color
 	GlobalVariables.colors[str(number)] = color
 	#GlobalVariables.save_settings()
+
+func _physics_process(delta):
+	$Container/ColorPickerButton.color = lerp($Container/ColorPickerButton.color, color, 0.1)
+	texture_rect.self_modulate = lerp(texture_rect.self_modulate, color, 0.1)
+	if not GlobalVariables.dont_color[str(number)]:
+		note_effect_preview.self_modulate = lerp(note_effect_preview.self_modulate, color, 0.1)
 
 func apply_parallax():
 	$Container/SpinBox.value = parallax
@@ -61,11 +71,12 @@ func apply_note_effect_texture():
 	#GlobalVariables.save_settings()
 	set_effect_texture()
 
-func _on_color_picker_button_color_changed(color):
-	texture_rect.self_modulate = color
+func _on_color_picker_button_color_changed(new_color):
+	self.color = new_color
+	texture_rect.self_modulate = new_color
 	if not GlobalVariables.dont_color[str(number)]:
-		note_effect_preview.self_modulate = color
-	GlobalVariables.colors[str(number)] = color 
+		note_effect_preview.self_modulate = new_color
+	GlobalVariables.colors[str(number)] = new_color 
 	#GlobalVariables.save_settings()
 
 func _on_spin_box_value_changed(value):
@@ -214,3 +225,20 @@ func _on_note_effect_button_gui_input(event):
 			MOUSE_BUTTON_RIGHT:
 				GlobalVariables.note_effect_texture[str(number)] = "res://assets/sprites/note_effect_texture.png"
 				set_effect_texture()
+
+
+func _on_color_picker_button_gui_input(event):
+	var main_interface = get_tree().get_nodes_in_group("MainInterface")[0]
+	await get_tree().process_frame
+	if event is InputEventMouseButton and event.pressed:
+		match event.button_index:
+			MOUSE_BUTTON_RIGHT:
+				if main_interface.gradient_start == null:
+					main_interface.gradient_start = number
+					var start_tween = get_tree().create_tween()
+					start_tween.tween_property($Container/GradientStart, "scale", Vector2(0.635, 0.953), 0.1)
+#					$Container/GradientStart.visible = true
+				else:
+					main_interface.create_gradient(number)
+
+			

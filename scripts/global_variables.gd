@@ -5,7 +5,7 @@ var note_images = {}
 var effect_images = {}
 
 var vertical_offset = -192
-var speed = 400
+var speed = 300
 var note_spacing = 1
 var note_size = 30
 var audio_offset = 0.0
@@ -21,7 +21,7 @@ var dont_color = {}
 var staccato_texture = load("res://assets/sprites/note_staccato_image.png")
 var bg = load("res://assets/sprites/black_image.png")
 var background_path = "res://assets/sprites/black_image.png"
-var json_path = "res://assets/sprites/test.mid"
+var json_path = "res://assets/sprites/demo.mid"
 var sound_path = "res://assets/sprites/demo.mp3"
 var square_ratio
 var bottom_note = 0
@@ -31,11 +31,28 @@ var top_margin = 880
 var velocity_strength = 0.2
 var pitch_bend_strength = 0.5
 
+var other_settings_path = "user://other_settings.json"
 var loaded_settings_path = "user://default_settings.json"
 var default_settings_path = "user://default_settings.json"
 #------------------------------------------------------------------------
 #SAVING SETTINGS
 #------------------------------------------------------------------------
+
+
+func save_other_settings():
+	var save_data = {
+		"loaded_settings_path": loaded_settings_path,
+		}
+	var save_setting = FileAccess.open(other_settings_path, FileAccess.WRITE)
+#	if error == OK:
+	save_setting.store_line(JSON.stringify(save_data,"\t"))
+
+func load_other_settings(path = other_settings_path):
+	var file = File.new()
+	if FileAccess.file_exists(path):
+		var json_text = FileAccess.get_file_as_string(path)
+		var save_data = JSON.parse_string(json_text)
+		load_variable(save_data, "loaded_settings_path")
 
 func save_settings(path = loaded_settings_path):
 	var i = 0
@@ -124,8 +141,10 @@ func load_settings(path):
 		note_texture_margins_json = save_data["note_texture_margins_json"]
 		staccato = save_data["staccato"]
 	else:
+		save_settings("user://default_settings.json")
 		return
 		
+#		load_settings("user://default_settings.json")
 	loaded_settings_path = path
 	DisplayServer.window_set_title("ALMAMPlayer | config: " + path)
 	var i = 0
@@ -143,7 +162,16 @@ func load_settings(path):
 #------------------------------------------------------------------------|
 
 func _ready():
-	load_settings("user://default_settings.json")
+	await get_tree().create_timer(0.1).timeout
+	if not FileAccess.file_exists(default_settings_path):
+		get_tree().get_nodes_in_group("MainInterface")[0].update_sliders()
+		await get_tree().create_timer(0.1).timeout
+		
+		save_settings(default_settings_path)
+	
+	load_other_settings()
+	load_settings(loaded_settings_path)
+	get_tree().get_nodes_in_group("MainInterface")[0].update_sliders()
 
 func _process(delta):
 	if Input.is_action_just_pressed("fullscreen"):
