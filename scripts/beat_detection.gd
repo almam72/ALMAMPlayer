@@ -51,6 +51,7 @@ func _ready():
 	$AudioStreamPlayer2.set_stream(audio_loader.loadfile(GlobalVariables.sound_path))
 #	$AnimationPlayer.seek(0.3, true)
 	load_midi()
+	start()
 
 func load_midi():
 	smf_data = null
@@ -183,7 +184,6 @@ func load_midi():
 #	print(notes)
 	
 #	sorted_notes
-	start()
 	
 func sort_ascending(a, b):
 	if a[2] == b[2]:

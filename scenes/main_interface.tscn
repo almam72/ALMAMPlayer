@@ -20,8 +20,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_l4jra"]
-viewport_path = NodePath("LivePreviewContainer/ViewportRenderTexture/PreviewViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_r3dy6"]
+viewport_path = NodePath("LivePreviewInterface/ViewportRenderTexture/PreviewViewport")
 
 [node name="Control" type="Control" groups=["MainInterface"]]
 process_mode = 3
@@ -591,7 +591,7 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.json")
 
-[node name="LivePreviewContainer" type="MarginContainer" parent="."]
+[node name="LivePreviewInterface" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 0
 offset_left = 950.0
@@ -599,26 +599,26 @@ offset_right = 1910.0
 offset_bottom = 540.0
 script = ExtResource("5_6wx70")
 
-[node name="ViewportRenderTexture" type="TextureRect" parent="LivePreviewContainer"]
+[node name="ViewportRenderTexture" type="TextureRect" parent="LivePreviewInterface"]
 layout_mode = 2
-texture = SubResource("ViewportTexture_l4jra")
+texture = SubResource("ViewportTexture_r3dy6")
 expand_mode = 5
 
-[node name="PreviewViewport" type="SubViewport" parent="LivePreviewContainer/ViewportRenderTexture"]
+[node name="PreviewViewport" type="SubViewport" parent="LivePreviewInterface/ViewportRenderTexture"]
 handle_input_locally = false
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
-[node name="LivePreview" parent="LivePreviewContainer/ViewportRenderTexture/PreviewViewport" instance=ExtResource("5_ej8h7")]
+[node name="LivePreview" parent="LivePreviewInterface/ViewportRenderTexture/PreviewViewport" instance=ExtResource("5_ej8h7")]
 unique_name_in_owner = true
 process_mode = 1
 
-[node name="Pause" type="Button" parent="LivePreviewContainer"]
+[node name="Pause" type="Button" parent="LivePreviewInterface"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 34
-text = "Pause"
+text = "Play"
 
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/NewConfigButton" to="." method="_on_new_config_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/LoadConfigButton" to="." method="_on_load_config_button_pressed"]
@@ -657,4 +657,4 @@ text = "Pause"
 [connection signal="file_selected" from="CreateNewConfig" to="." method="_on_create_new_config_file_selected"]
 [connection signal="files_selected" from="LoadSongFileDialog" to="." method="_on_load_song_file_dialog_files_selected"]
 [connection signal="file_selected" from="LoadConfigDialog" to="." method="_on_load_config_dialog_file_selected"]
-[connection signal="pressed" from="LivePreviewContainer/Pause" to="LivePreviewContainer" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="LivePreviewInterface/Pause" to="LivePreviewInterface" method="_on_pause_button_pressed"]

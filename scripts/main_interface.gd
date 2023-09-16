@@ -119,6 +119,7 @@ func load_midi(midi_path):
 			return
 	
 	GlobalVariables.json_path = midi_path
+	reset_live_preview()
 	
 	for track in color_container.get_children():
 		track.free()
@@ -312,10 +313,7 @@ func _on_export_button_pressed():
 	$%ExportVideo.show()
 
 func _on_debug_button_pressed():
-	var live_preview = $%LivePreview
-	live_preview.init({
-		"loaded_config": GlobalVariables.loaded_settings_path
-	})
+	reset_live_preview()
 
 func _on_h_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
@@ -533,3 +531,9 @@ func _on_save_before_quit_confirmed():
 
 func _on_save_before_quit_canceled():
 	get_tree().quit()
+
+func reset_live_preview():
+	$%LivePreview.init({
+		"loaded_config": GlobalVariables.loaded_settings_path
+	})
+	
