@@ -310,7 +310,13 @@ func _on_preview_button_pressed():
 func _on_export_button_pressed():
 	GlobalVariables.save_settings()
 	$%ExportVideo.show()
-	
+
+func _on_debug_button_pressed():
+	var live_preview = $%LivePreview
+	live_preview.init({
+		"loaded_config": GlobalVariables.loaded_settings_path
+	})
+
 func _on_h_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
 	#GlobalVariables.save_settings()

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c67cg0gwkl383"]
+[gd_scene load_steps=7 format=3 uid="uid://c67cg0gwkl383"]
 
 [ext_resource type="Theme" uid="uid://cfni7mm2mqusg" path="res://assets/main_interface.tres" id="1_7w4np"]
 [ext_resource type="Script" path="res://scripts/main_interface.gd" id="1_v86r2"]
 [ext_resource type="Texture2D" uid="uid://df6uqumd68lfc" path="res://assets/sprites/black.png" id="2_vb6hc"]
 [ext_resource type="Script" path="res://scripts/preview.gd" id="3_h8nuy"]
+[ext_resource type="PackedScene" uid="uid://bmil4knpx81j2" path="res://scenes/live_preview.tscn" id="5_ej8h7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bhba"]
 bg_color = Color(0.968627, 0.968627, 0.968627, 1)
@@ -19,6 +20,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="Control" type="Control" groups=["MainInterface"]]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -390,6 +392,12 @@ size_flags_vertical = 10
 theme_override_font_sizes/font_size = 34
 text = "Export Video"
 
+[node name="Debug" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 34
+text = "Debug"
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
@@ -579,6 +587,32 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.json")
 
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 0
+offset_left = 950.0
+offset_right = 1910.0
+offset_bottom = 540.0
+
+[node name="LivePreviewContainer" type="SubViewportContainer" parent="MarginContainer2"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer2/LivePreviewContainer"]
+handle_input_locally = false
+size = Vector2i(960, 540)
+render_target_update_mode = 4
+
+[node name="LivePreview" parent="MarginContainer2/LivePreviewContainer/SubViewport" instance=ExtResource("5_ej8h7")]
+unique_name_in_owner = true
+process_mode = 1
+
+[node name="Pause" type="Button" parent="MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 34
+text = "Pause"
+
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/NewConfigButton" to="." method="_on_new_config_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/LoadConfigButton" to="." method="_on_load_config_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/SaveConfigButton" to="." method="_on_save_config_button_pressed"]
@@ -600,6 +634,7 @@ filters = PackedStringArray("*.json")
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/HBoxContainer/AudioOffsetSlider" to="." method="_on_audio_offset_slider_value_changed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExportButton2" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Debug" to="." method="_on_debug_button_pressed"]
 [connection signal="toggled" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer/SquareToggle" to="." method="_on_square_toggle_toggled"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer/VelocitySlider" to="." method="_on_velocity_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer/PitchBendSlider" to="." method="_on_pitch_bend_slider_value_changed"]
@@ -615,3 +650,4 @@ filters = PackedStringArray("*.json")
 [connection signal="file_selected" from="CreateNewConfig" to="." method="_on_create_new_config_file_selected"]
 [connection signal="files_selected" from="LoadSongFileDialog" to="." method="_on_load_song_file_dialog_files_selected"]
 [connection signal="file_selected" from="LoadConfigDialog" to="." method="_on_load_config_dialog_file_selected"]
+[connection signal="pressed" from="MarginContainer2/Pause" to="MarginContainer2/LivePreviewContainer/SubViewport/LivePreview" method="_on_pause_button_pressed"]

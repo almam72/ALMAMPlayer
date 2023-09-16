@@ -1,4 +1,5 @@
 extends Node2D
+class_name BeatDetection
 
 @onready var background = $Camera2D/BackgroundImage
 var _effect_capture
