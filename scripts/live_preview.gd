@@ -4,7 +4,6 @@ func _ready():
 	print("oh i am *so* ready >:)")
 
 func init(arguments):
-	reset()
 	GlobalVariables.load_settings(arguments["loaded_config"])
 #	print(GlobalVariables.square_ratio)
 	if GlobalVariables.square_ratio:
@@ -19,9 +18,3 @@ func init(arguments):
 	$AudioStreamPlayer2.set_stream(audio_loader.loadfile(GlobalVariables.sound_path))
 #	$AnimationPlayer.seek(0.3, true)
 	load_midi()
-
-func reset():
-	get_tree().call_group("Tracks", "queue_free")
-
-func _on_pause_button_pressed():
-	get_tree().paused = !get_tree().paused
