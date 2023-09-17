@@ -1,5 +1,4 @@
 extends Node2D
-class_name BeatDetection
 
 @onready var background = $Camera2D/BackgroundImage
 var _effect_capture
@@ -349,13 +348,13 @@ func add_note_to_array(note, track_number, velocity = 1):
 #		var time = str(note["time"] + 0.5 + abs(GlobalVariables.audio_offset))
 #		if not notes.has(time):
 #			notes[time] = []
-		notes.append([note["midi"], note["duration"], note["time"], track_number, velocity])
+		notes.append([note["midi"], note["duration"], note["time"], track_number, velocity, null]) # null is note instance
 		
 	else:
 #		var time = str(note["time"] + 0.5)
 #		if not notes.has(time):
 #			notes[time] = []
-		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.audio_offset), track_number, velocity])
+		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.audio_offset), track_number, velocity, null])
 		
 #	var time = str(note["time"])
 	
