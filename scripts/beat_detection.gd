@@ -8,6 +8,7 @@ var file_path
 var loaded_file = File.new()
 var notes = []
 var sorted_notes = []
+var note_instances = []
 var pitchbends = {}
 var dance_notes = {}
 var time_accuracy = 0.1
@@ -413,6 +414,7 @@ func play_notes(note):
 					$WaveAnchor/NoteHolder.position.y = GlobalVariables.vertical_offset
 					get_node("WaveAnchor/NoteHolder/Track" + str(note[3])).add_child(note_instance)
 					unfinished_notes.erase(unfinished_note)
+					note_instances.append(note_instance)
 
 
 func play_note_effect(notes):

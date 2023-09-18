@@ -119,7 +119,7 @@ func load_midi(midi_path):
 			return
 	
 	GlobalVariables.json_path = midi_path
-	reset_live_preview()
+	$%LivePreview.reset()
 	
 	for track in color_container.get_children():
 		track.free()
@@ -313,7 +313,7 @@ func _on_export_button_pressed():
 	$%ExportVideo.show()
 
 func _on_debug_button_pressed():
-	reset_live_preview()
+	$%LivePreview.reset()
 
 func _on_h_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
@@ -322,6 +322,7 @@ func _on_h_slider_value_changed(value):
 func _on_speed_slider_value_changed(value):
 	GlobalVariables.speed = value
 	#GlobalVariables.save_settings()
+	$%LivePreview.notify_global_variable_change("speed", value)
 
 func _on_note_spacing_slider_value_changed(value):
 #	GlobalVariables.note_spacing = value
@@ -333,6 +334,7 @@ func _on_vertical_offset_slider_value_changed(value):
 	GlobalVariables.vertical_offset = value
 	$%BottomMargin/Label.text = str(value)
 	#GlobalVariables.save_settings()
+	$%LivePreview.notify_global_variable_change("vertical_offset", value)
 	update_note_spacing()
 	
 
@@ -372,12 +374,14 @@ func _on_reset_parallax_button_pressed():
 func update_note_spacing():
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / GlobalVariables.note_range
 	#GlobalVariables.save_settings()
+	$%LivePreview.notify_global_variable_change("note_spacing", GlobalVariables.note_spacing)
 
 
 func _on_top_margin_slider_value_changed(value):
 	$%TopMargin.position.y = value / 2 * -1
 	GlobalVariables.top_margin = value
 	$%TopMargin/Label.text = str(value)
+	$%LivePreview.notify_global_variable_change("top_margin", value)
 	#GlobalVariables.save_settings()
 	update_note_spacing()
 
@@ -461,6 +465,7 @@ func _on_export_video_file_selected(path):
 func _on_audio_offset_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
 	#GlobalVariables.save_settings()
+	$%LivePreview.notify_global_variable_change("audio_offset", value)
 
 
 func _on_note_length_slider_value_changed(value):
@@ -531,9 +536,3 @@ func _on_save_before_quit_confirmed():
 
 func _on_save_before_quit_canceled():
 	get_tree().quit()
-
-func reset_live_preview():
-	$%LivePreview.init({
-		"loaded_config": GlobalVariables.loaded_settings_path
-	})
-	
