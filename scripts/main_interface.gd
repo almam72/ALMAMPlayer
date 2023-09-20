@@ -116,7 +116,6 @@ func load_midi(midi_path):
 			return
 	
 	GlobalVariables.json_path = midi_path
-	$%LivePreview.reset()
 	
 	for track in color_container.get_children():
 		track.free()
@@ -239,6 +238,7 @@ func load_midi(midi_path):
 	GlobalVariables.bottom_note = note_min
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
 	#GlobalVariables.save_settings()
+	$%LivePreview.reset()
 
 var gradient_start = null
 

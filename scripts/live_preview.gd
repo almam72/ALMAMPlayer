@@ -57,15 +57,24 @@ func _clear():
 ## Let the preview window know it needs to change stuff
 func notify_global_variable_change(variable_name : String, _value : Variant):
 	match variable_name:
-		"vertical_offset", "audio_offset", "speed",	"top_margin", "note_spacing":
+		"vertical_offset", "audio_offset", "note_spacing":
+			_layout_tracks()
+		"top_margin":
+			_layout_tracks()
 			_layout_notes()
+		"speed":
+			_layout_tracks()
+			_layout_notes()
+			_scale_notes()
 		_:
 			push_error("Unrecognized global variable \'%s\'" % variable_name)
 			
+func _get_time():
+	return 1.0 - (elapsed_playtime + delay + abs(GlobalVariables.audio_offset))
 
-## Sets note positions
-func _layout_notes():
-	var time = 1.0 - (elapsed_playtime + delay + abs(GlobalVariables.audio_offset))
+## Sets track position/speed
+func _layout_tracks():
+	var time = _get_time()
 	for track_instance in $WaveAnchor/NoteHolder.get_children():
 		if track_instance.name.begins_with("Track"):
 			# Update track's fields
@@ -75,13 +84,19 @@ func _layout_notes():
 			# Update position
 			track_instance.position = Vector2(time * track_instance.parallax, 0)
 
-			# Update notes
-			for note_instance in track_instance.get_children():
-				if not (note_instance is AnimationPlayer):
-					note_instance.speed = track_instance.speed
-					note_instance.set_parallax()
-					note_instance.position.x = note_instance.time * note_instance.parallax
-					note_instance.position.y = -note_instance.note_number * GlobalVariables.note_spacing
-
 	$WaveAnchor/NoteHolder.position.y = GlobalVariables.vertical_offset
 
+## Sets note position/speed (does NOT update note scale)
+func _layout_notes():
+	var time = _get_time()
+	for note_instance in note_instances:
+		note_instance.speed = GlobalVariables.speed
+		note_instance.set_parallax()
+		note_instance.position.x = note_instance.time * note_instance.parallax
+		note_instance.position.y = -note_instance.note_number * GlobalVariables.note_spacing
+
+## Makes notes look larger/smaller as things speed up/down
+## This is slow :(
+func _scale_notes():
+	for note_instance in note_instances:
+		note_instance.set_note_texture_transform()
