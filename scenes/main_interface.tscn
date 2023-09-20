@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://c67cg0gwkl383"]
+[gd_scene load_steps=8 format=3 uid="uid://c67cg0gwkl383"]
 
 [ext_resource type="Theme" uid="uid://cfni7mm2mqusg" path="res://assets/main_interface.tres" id="1_7w4np"]
 [ext_resource type="Script" path="res://scripts/main_interface.gd" id="1_v86r2"]
-[ext_resource type="Texture2D" uid="uid://df6uqumd68lfc" path="res://assets/sprites/black.png" id="2_vb6hc"]
 [ext_resource type="Script" path="res://scripts/preview.gd" id="3_h8nuy"]
 [ext_resource type="Script" path="res://scripts/preview_interface.gd" id="5_6wx70"]
 [ext_resource type="PackedScene" uid="uid://bmil4knpx81j2" path="res://scenes/live_preview.tscn" id="5_ej8h7"]
@@ -21,7 +20,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_r3dy6"]
-viewport_path = NodePath("LivePreviewInterface/ViewportRenderTexture/PreviewViewport")
+viewport_path = NodePath("MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture/PreviewViewport")
 
 [node name="Control" type="Control" groups=["MainInterface"]]
 process_mode = 3
@@ -205,53 +204,31 @@ size_flags_horizontal = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Background" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+[node name="LivePreviewInterface" type="MarginContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+script = ExtResource("5_6wx70")
+
+[node name="ViewportRenderTexture" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface"]
+layout_mode = 2
+texture = SubResource("ViewportTexture_r3dy6")
+expand_mode = 5
+
+[node name="PreviewViewport" type="SubViewport" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="LivePreview" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture/PreviewViewport" instance=ExtResource("5_ej8h7")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(960, 540)
+process_mode = 1
+
+[node name="Pause" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface"]
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_vb6hc")
-expand_mode = 1
-stretch_mode = 6
-
-[node name="BottomMarginAnchor" type="Node2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background"]
-position = Vector2(0, 540)
-
-[node name="TopMargin" type="Line2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor"]
-unique_name_in_owner = true
-position = Vector2(0, -438)
-points = PackedVector2Array(0, 0, 960, 0)
-width = 24.0
-default_color = Color(0.980469, 0.730469, 0.347656, 1)
-
-[node name="Label" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor/TopMargin"]
-offset_left = 883.0
-offset_top = -17.0
-offset_right = 961.0
-offset_bottom = 25.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "1000"
-fit_content = true
-scroll_active = false
-
-[node name="BottomMargin" type="Line2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor"]
-unique_name_in_owner = true
-position = Vector2(0, -102)
-points = PackedVector2Array(0, 0, 407.941, 0, 960, 0)
-width = 24.0
-default_color = Color(0.980469, 0.730469, 0.347656, 1)
-
-[node name="Label" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor/BottomMargin"]
-offset_left = 883.0
-offset_top = -17.0
-offset_right = 961.0
-offset_bottom = 25.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "1000"
-fit_content = true
-scroll_active = false
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 34
+text = "Play"
 
 [node name="Sizer" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(960, 0)
@@ -591,35 +568,6 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.json")
 
-[node name="LivePreviewInterface" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(5, 0)
-layout_mode = 0
-offset_left = 950.0
-offset_right = 1910.0
-offset_bottom = 540.0
-script = ExtResource("5_6wx70")
-
-[node name="ViewportRenderTexture" type="TextureRect" parent="LivePreviewInterface"]
-layout_mode = 2
-texture = SubResource("ViewportTexture_r3dy6")
-expand_mode = 5
-
-[node name="PreviewViewport" type="SubViewport" parent="LivePreviewInterface/ViewportRenderTexture"]
-handle_input_locally = false
-size = Vector2i(1920, 1080)
-render_target_update_mode = 4
-
-[node name="LivePreview" parent="LivePreviewInterface/ViewportRenderTexture/PreviewViewport" instance=ExtResource("5_ej8h7")]
-unique_name_in_owner = true
-process_mode = 1
-
-[node name="Pause" type="Button" parent="LivePreviewInterface"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 10
-theme_override_font_sizes/font_size = 34
-text = "Play"
-
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/NewConfigButton" to="." method="_on_new_config_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/LoadConfigButton" to="." method="_on_load_config_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer5/SaveConfigButton" to="." method="_on_save_config_button_pressed"]
@@ -633,6 +581,7 @@ text = "Play"
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer/ResetParallaxButton" to="." method="_on_reset_parallax_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2/ResetNoteTextureButton" to="." method="_on_reset_note_texture_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2/ResetNoteEffectTextureButton" to="." method="_on_reset_note_effect_texture_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/Pause" to="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface" method="_on_pause_button_pressed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer/SpeedSlider" to="." method="_on_speed_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSpacingSliderContainer/NoteSpacingSlider" to="." method="_on_note_spacing_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSizeSliderContainer/NoteSizeSlider" to="." method="_on_note_size_slider_value_changed"]
@@ -657,4 +606,3 @@ text = "Play"
 [connection signal="file_selected" from="CreateNewConfig" to="." method="_on_create_new_config_file_selected"]
 [connection signal="files_selected" from="LoadSongFileDialog" to="." method="_on_load_song_file_dialog_files_selected"]
 [connection signal="file_selected" from="LoadConfigDialog" to="." method="_on_load_config_dialog_file_selected"]
-[connection signal="pressed" from="LivePreviewInterface/Pause" to="LivePreviewInterface" method="_on_pause_button_pressed"]

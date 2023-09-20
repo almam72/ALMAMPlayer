@@ -2,7 +2,6 @@ extends Control
 
 var file_path
 #var loaded_file = File.new()
-@onready var background = $%Background
 @onready var color_container = $%ColorContainer
 #@onready var happy_slider = $MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HappySlider/HappySlider
 @onready var speed_slider = %SpeedSlider
@@ -50,8 +49,6 @@ func update_sliders():
 	note_spacing_slider.value = GlobalVariables.note_spacing
 	vertical_offset_slider.value = GlobalVariables.vertical_offset
 	top_margin_slider.value = GlobalVariables.top_margin
-	$%TopMargin/Label.text = str(GlobalVariables.top_margin)
-	$%BottomMargin/Label.text = str(GlobalVariables.vertical_offset)
 	audio_offset_slider.value = GlobalVariables.audio_offset
 	load_image(GlobalVariables.background_path)
 	MP3.text = GlobalVariables.sound_path + " loaded"
@@ -297,8 +294,6 @@ func load_image(file):
 #	if err != OK:
 #		# Failed
 #		print("error loading image :(")
-	if GlobalVariables.background_path != "res://assets/sprites/black_image.png":
-		background.texture = ImageTexture.create_from_image(Image.load_from_file(file))
 #	background.texture = ImageTexture.new()
 #	background.texture.create_from_image(image)
 	GlobalVariables.background_path = file
@@ -330,9 +325,7 @@ func _on_note_spacing_slider_value_changed(value):
 	pass
 
 func _on_vertical_offset_slider_value_changed(value):
-	$%BottomMargin.position.y = value / 2
 	GlobalVariables.vertical_offset = value
-	$%BottomMargin/Label.text = str(value)
 	#GlobalVariables.save_settings()
 	$%LivePreview.notify_global_variable_change("vertical_offset", value)
 	update_note_spacing()
@@ -344,10 +337,6 @@ func _on_note_size_slider_value_changed(value):
 
 func _on_square_toggle_toggled(button_pressed):
 	GlobalVariables.square_ratio = button_pressed
-	if button_pressed:
-		$%Background.custom_minimum_size.x = 540
-	else:
-		$%Background.custom_minimum_size.x = 960
 	#GlobalVariables.save_settings()
 
 
@@ -378,9 +367,7 @@ func update_note_spacing():
 
 
 func _on_top_margin_slider_value_changed(value):
-	$%TopMargin.position.y = value / 2 * -1
 	GlobalVariables.top_margin = value
-	$%TopMargin/Label.text = str(value)
 	$%LivePreview.notify_global_variable_change("top_margin", value)
 	#GlobalVariables.save_settings()
 	update_note_spacing()
