@@ -3,6 +3,8 @@ extends "res://scripts/beat_detection.gd"
 # var elapsed_playtime : float = 0
 var _audio_position : float = 0
 
+var NoteEffectScene = preload("res://scenes/note_effect.tscn")
+
 func _ready():
 	# I think this is necessary so we don't run the base class's _ready
 	print("oh i am *so* ready >:)")
@@ -73,23 +75,23 @@ func notify_global_variable_change(variable_name : String, _value : Variant):
 ## every frame while time is moving normally
 func set_audio_position(value : float):
 	assert(get_tree().paused)
-	var delta = value - _audio_position
 	_audio_position = value
 	_layout_tracks() # Update everything's position
-	print(delta)
-	_update_note_effect_timers(delta)	
+	_update_note_effect_timers()	
 
-func _update_note_effect_timers(delta : float):
+func _update_note_effect_timers():
+	var time = _get_time()
 	for note_instance in note_instances:
+		# Reset effect timer
 		var timer = note_instance.get_node("Timer")
-		timer.start(timer.wait_time + delta)
+		timer.start(note_instance.time - time)
 		note_instance.playing = false
 
 ## Estimates the playback time of the scene (basically guesstimates at a "time" value
 ## like in note.gd)
 func _get_time():
 	const an_arbitrary_but_necessary_offset = 0.4 # don't question it
-	return 1.0 - (0.5 + an_arbitrary_but_necessary_offset + _audio_position + delay +  abs(GlobalVariables.audio_offset))
+	return -0.5 + an_arbitrary_but_necessary_offset + _audio_position + delay +  abs(GlobalVariables.audio_offset)
 
 ## Sets track position/speed
 func _layout_tracks():
@@ -101,7 +103,7 @@ func _layout_tracks():
 			track_instance.set_parallax()
 
 			# Update position
-			track_instance.position = Vector2(time * track_instance.parallax, 0)
+			track_instance.position = Vector2(-time * track_instance.parallax, 0)
 
 	$WaveAnchor/NoteHolder.position.y = GlobalVariables.vertical_offset
 
