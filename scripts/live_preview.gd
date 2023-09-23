@@ -1,13 +1,14 @@
 extends "res://scripts/beat_detection.gd"
 
-var elapsed_playtime : float = 0
+# var elapsed_playtime : float = 0
+var _audio_position : float = 0
 
 func _ready():
 	# I think this is necessary so we don't run the base class's _ready
 	print("oh i am *so* ready >:)")
 
 func _process(delta):
-	elapsed_playtime += delta
+	_audio_position += delta
 
 ## (Re-)creates the preview based on arguments dict (see beat_detection.gd::_ready)
 func init(arguments):
@@ -29,8 +30,7 @@ func init(arguments):
 	load_midi()
 	await start() # Some weird async stuff happens in this function which leads to audio not pausing properly if you don't await
 	get_tree().paused = true
-	const an_arbitrary_but_necessary_offset = 0.4 # don't question it
-	elapsed_playtime = 0.5 + an_arbitrary_but_necessary_offset
+	_audio_position = 0
 
 ## Convenience function to relaod the preview based on the current config file
 func reset():
@@ -69,8 +69,27 @@ func notify_global_variable_change(variable_name : String, _value : Variant):
 		_:
 			push_error("Unrecognized global variable \'%s\'" % variable_name)
 			
+## This function should only be called when user is seeking, not
+## every frame while time is moving normally
+func set_audio_position(value : float):
+	assert(get_tree().paused)
+	var delta = value - _audio_position
+	_audio_position = value
+	_layout_tracks() # Update everything's position
+	print(delta)
+	_update_note_effect_timers(delta)	
+
+func _update_note_effect_timers(delta : float):
+	for note_instance in note_instances:
+		var timer = note_instance.get_node("Timer")
+		timer.start(timer.wait_time + delta)
+		note_instance.playing = false
+
+## Estimates the playback time of the scene (basically guesstimates at a "time" value
+## like in note.gd)
 func _get_time():
-	return 1.0 - (elapsed_playtime + delay + abs(GlobalVariables.audio_offset))
+	const an_arbitrary_but_necessary_offset = 0.4 # don't question it
+	return 1.0 - (0.5 + an_arbitrary_but_necessary_offset + _audio_position + delay +  abs(GlobalVariables.audio_offset))
 
 ## Sets track position/speed
 func _layout_tracks():
