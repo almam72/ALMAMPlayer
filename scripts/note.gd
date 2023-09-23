@@ -48,18 +48,7 @@ func _ready():
 	z_index += parallax 
 	set_note_texture_transform()
 
-	if staccato:
-		duration = 0.1
-	if time > 0.075:
-		$Timer.wait_time = time - 0.03
-	else:
-		$Timer.wait_time = 0.06
-#	if time > 2.06:
-#		$StartTimer.wait_time = time - 2.06
-	if duration > 0:
-		$DurationTimer.wait_time = duration
-	else:
-		$DurationTimer.wait_time = 0.1
+	set_note_effect(time)
 #	global_position = Vector2(stepify(global_position.x, 1.0),stepify(global_position.y, 1.0))
 #	$StartTimer.start()
 	$Timer.start()
@@ -233,6 +222,25 @@ func set_note_texture_transform():
 func set_note_margins():
 	texture_rext.patch_margin_left = GlobalVariables.note_texture_margins[str(track_number)].x
 	texture_rext.patch_margin_right = GlobalVariables.note_texture_margins[str(track_number)].y
+
+## Updates note effects to play at about play_time seconds from now
+## Returns note effect start timer
+func set_note_effect(play_time):
+	if staccato:
+		duration = 0.1
+	if play_time > 0.075:
+		$Timer.wait_time = play_time - 0.03
+	else:
+		$Timer.wait_time = 0.06
+#	if time > 2.06:
+#		$StartTimer.wait_time = time - 2.06
+	if duration > 0:
+		$DurationTimer.wait_time = duration
+	else:
+		$DurationTimer.wait_time = 0.1
+	
+	playing = false
+	return $Timer
 
 func bend(value = 0):
 	bend_to = value * GlobalVariables.note_spacing * -4 * 0.0001 * GlobalVariables.pitch_bend_strength

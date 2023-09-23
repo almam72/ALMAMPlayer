@@ -122,6 +122,7 @@ func _update_note_effect_timers():
 	var time = _get_time()
 	for note_instance in note_instances:
 		# Reset effect timer
-		var timer = note_instance.get_node("Timer")
-		timer.start(note_instance.time - time)
-		note_instance.playing = false
+		var horizon = note_instance.time - time
+		if horizon > 0:
+			var timer = note_instance.set_note_effect(horizon)
+			timer.start()
