@@ -81,15 +81,7 @@ func set_audio_position(value : float):
 	_audio_position = value
 	_layout_tracks() # Update everything's position
 	_update_note_effect_timers()	
-
-func _update_note_effect_timers():
-	var time = _get_time()
-	for note_instance in note_instances:
-		# Reset effect timer
-		var timer = note_instance.get_node("Timer")
-		timer.start(note_instance.time - time)
-		note_instance.playing = false
-
+	
 ## Estimates the playback time of the scene (basically guesstimates at a "time" value
 ## like in note.gd)
 func _get_time():
@@ -124,3 +116,12 @@ func _layout_notes():
 func _scale_notes():
 	for note_instance in note_instances:
 		note_instance.set_note_texture_transform()
+
+## Brings note effect timers up-to-date with the current audio position
+func _update_note_effect_timers():
+	var time = _get_time()
+	for note_instance in note_instances:
+		# Reset effect timer
+		var timer = note_instance.get_node("Timer")
+		timer.start(note_instance.time - time)
+		note_instance.playing = false
