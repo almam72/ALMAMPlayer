@@ -59,11 +59,14 @@ func _clear():
 ## Let the preview window know it needs to change stuff
 func notify_global_variable_change(variable_name : String, _value : Variant):
 	match variable_name:
-		"vertical_offset", "audio_offset", "note_spacing":
+		"vertical_offset", "note_spacing":
 			_layout_tracks()
 		"top_margin":
 			_layout_tracks()
 			_layout_notes()
+		"audio_offset":
+			_layout_tracks()
+			_update_note_effect_timers()
 		"speed":
 			_layout_tracks()
 			_layout_notes()
