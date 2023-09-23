@@ -19,7 +19,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_r3dy6"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_m0py4"]
 viewport_path = NodePath("MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture/PreviewViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_cjaje"]
@@ -217,7 +217,7 @@ script = ExtResource("5_6wx70")
 
 [node name="ViewportRenderTexture" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface"]
 layout_mode = 2
-texture = SubResource("ViewportTexture_r3dy6")
+texture = SubResource("ViewportTexture_m0py4")
 expand_mode = 5
 
 [node name="PreviewViewport" type="SubViewport" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture"]
@@ -234,6 +234,7 @@ layout_mode = 2
 size_flags_vertical = 8
 
 [node name="Pause" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer"]
+custom_minimum_size = Vector2(115, 56)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
