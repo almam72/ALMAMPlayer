@@ -474,12 +474,13 @@ func _on_note_length_slider_value_changed(value):
 func _on_velocity_slider_value_changed(value):
 	GlobalVariables.velocity_strength = value
 	#GlobalVariables.save_settings()
+	LivePreview.notify_global_variable_change("velocity_strength")
 
 
 func _on_pitch_bend_slider_value_changed(value):
 	GlobalVariables.pitch_bend_strength = value
 	#GlobalVariables.save_settings()
-
+	LivePreview.notify_global_variable_change("pitch_bend_strength")
 
 
 func _on_save_config_button_pressed():

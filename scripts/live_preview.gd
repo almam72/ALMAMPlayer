@@ -74,6 +74,8 @@ func notify_global_variable_change(variable_name : String):
 			_update_note_texture_transforms()
 		"colors", "dont_color":
 			_update_note_colors()
+		"velocity_strength", "pitch_bend_strength":
+			pass # Don't need to so anything for these ones!
 		_:
 			push_error("Unrecognized global variable \'%s\'" % variable_name)
 			
