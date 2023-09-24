@@ -159,7 +159,11 @@ func set_parallax():
 	parallax = GlobalVariables.parallax[str(track_number)] * speed
 
 func set_color():
-	color = GlobalVariables.colors[str(track_number)]
+	const kNoColor = Color(1.0, 1.0, 1.0, 1.0)
+	if GlobalVariables.dont_color[str(track_number)]:
+		color = kNoColor
+	else:
+		color = GlobalVariables.colors[str(track_number)]
 
 func set_note_texture():
 	if staccato:

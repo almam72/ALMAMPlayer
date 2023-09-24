@@ -1,6 +1,5 @@
 extends "res://scripts/beat_detection.gd"
 
-# var elapsed_playtime : float = 0
 var _audio_position : float = 0
 
 var NoteEffectScene = preload("res://scenes/note_effect.tscn")
@@ -12,11 +11,10 @@ func _ready():
 func _process(delta):
 	_audio_position += delta
 
-## (Re-)creates the preview based on arguments dict (see beat_detection.gd::_ready)
-func init(arguments):
+## (Re-)creates the preview based on current global variables
+func reset():
 	_clear()
 	get_tree().paused = false
-	GlobalVariables.load_settings(arguments["loaded_config"])
 #	print(GlobalVariables.square_ratio)
 	if GlobalVariables.square_ratio:
 #		ProjectSettings.set_setting("display/window/size/viewport_width", 1080)
@@ -33,12 +31,6 @@ func init(arguments):
 	await start() # Some weird async stuff happens in this function which leads to audio not pausing properly if you don't await
 	get_tree().paused = true
 	_audio_position = 0
-
-## Convenience function to relaod the preview based on the current config file
-func reset():
-	init({
-		"loaded_config": GlobalVariables.loaded_settings_path
-	})
 
 ## Removes all notes from the preview
 func _clear():
@@ -57,11 +49,11 @@ func _clear():
 	dance_notes.clear()	
 
 ## Let the preview window know it needs to change stuff
-func notify_global_variable_change(variable_name : String, _value : Variant):
+func notify_global_variable_change(variable_name : String):
 	match variable_name:
 		"vertical_offset", "note_spacing":
 			_layout_tracks()
-		"top_margin":
+		"top_margin", "parallax":
 			_layout_tracks()
 			_layout_notes()
 		"audio_offset":
@@ -71,6 +63,17 @@ func notify_global_variable_change(variable_name : String, _value : Variant):
 			_layout_tracks()
 			_layout_notes()
 			_scale_notes()
+		"note_texture":
+			_update_note_textures()
+		"note_effect_texture":
+			_update_note_effect_textures()
+		"staccato":
+			_update_note_textures()
+			_update_note_texture_transforms()
+		"note_texture_margins":
+			_update_note_texture_transforms()
+		"colors", "dont_color":
+			_update_note_colors()
 		_:
 			push_error("Unrecognized global variable \'%s\'" % variable_name)
 			
@@ -115,6 +118,31 @@ func _layout_notes():
 ## This is slow :(
 func _scale_notes():
 	for note_instance in note_instances:
+		note_instance.set_note_texture_transform()
+
+func _update_note_colors():
+	for note_instance in note_instances:
+		note_instance.set_color()
+		note_instance.set_note_texture_transform()
+
+func _update_note_textures():
+	for track_instance in $WaveAnchor/NoteHolder.get_children():
+		if track_instance.name.begins_with("Track"):
+			var track_number = int(track_instance.name.substr(5))
+			set_track_texture(track_number)
+	for note_instance in note_instances:
+		note_instance.staccato = GlobalVariables.staccato[str(note_instance.track_number)]
+		note_instance.set_note_texture()
+
+func _update_note_effect_textures():
+	for track_instance in $WaveAnchor/NoteHolder.get_children():
+		if track_instance.name.begins_with("Track"):
+			var track_number = int(track_instance.name.substr(5))
+			set_track_effect_texture(track_number)
+
+func _update_note_texture_transforms():
+	for note_instance in note_instances:
+		note_instance.set_note_margins()
 		note_instance.set_note_texture_transform()
 
 ## Brings note effect timers up-to-date with the current audio position

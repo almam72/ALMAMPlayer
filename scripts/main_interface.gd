@@ -15,6 +15,7 @@ var file_path
 
 
 @onready var MP3 = $%MP3
+@onready var LivePreview = $%LivePreview
 
 
 var track_color_scene = preload("res://scenes/TrackColor.tscn")
@@ -238,7 +239,7 @@ func load_midi(midi_path):
 	GlobalVariables.bottom_note = note_min
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / note_range
 	#GlobalVariables.save_settings()
-	$%LivePreview.reset()
+	LivePreview.reset()
 
 var gradient_start = null
 
@@ -308,7 +309,7 @@ func _on_export_button_pressed():
 	$%ExportVideo.show()
 
 func _on_debug_button_pressed():
-	$%LivePreview.reset()
+	LivePreview.reset()
 
 func _on_h_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
@@ -317,7 +318,7 @@ func _on_h_slider_value_changed(value):
 func _on_speed_slider_value_changed(value):
 	GlobalVariables.speed = value
 	#GlobalVariables.save_settings()
-	$%LivePreview.notify_global_variable_change("speed", value)
+	LivePreview.notify_global_variable_change("speed")
 
 func _on_note_spacing_slider_value_changed(value):
 #	GlobalVariables.note_spacing = value
@@ -327,7 +328,7 @@ func _on_note_spacing_slider_value_changed(value):
 func _on_vertical_offset_slider_value_changed(value):
 	GlobalVariables.vertical_offset = value
 	#GlobalVariables.save_settings()
-	$%LivePreview.notify_global_variable_change("vertical_offset", value)
+	LivePreview.notify_global_variable_change("vertical_offset")
 	update_note_spacing()
 	
 
@@ -349,6 +350,7 @@ func _on_reset_colors_button_pressed():
 #		track.color = Color.from_hsv(1.0 / number_of_tracks * track_number, 0.7, 0.85, 1.0)
 		track.apply_color()
 		track_number += 1
+	LivePreview.notify_global_variable_change("colors")
 
 
 func _on_reset_parallax_button_pressed():
@@ -359,16 +361,17 @@ func _on_reset_parallax_button_pressed():
 		track.parallax = (1.2 / number_of_tracks * (number_of_tracks - track_number)) + 0.5
 		track.apply_parallax()
 		track_number += 1
+	LivePreview.notify_global_variable_change("parallax")
 
 func update_note_spacing():
 	GlobalVariables.note_spacing = (GlobalVariables.vertical_offset + GlobalVariables.top_margin) / GlobalVariables.note_range
 	#GlobalVariables.save_settings()
-	$%LivePreview.notify_global_variable_change("note_spacing", GlobalVariables.note_spacing)
+	LivePreview.notify_global_variable_change("note_spacing")
 
 
 func _on_top_margin_slider_value_changed(value):
 	GlobalVariables.top_margin = value
-	$%LivePreview.notify_global_variable_change("top_margin", value)
+	LivePreview.notify_global_variable_change("top_margin")
 	#GlobalVariables.save_settings()
 	update_note_spacing()
 
@@ -382,6 +385,7 @@ func _on_reset_note_texture_button_pressed():
 		track.apply_note_texture()
 #		track.set_note_texture()
 		track_number += 1
+	LivePreview.notify_global_variable_change("note_texture")
 
 
 func _on_note_texture_button_pressed():
@@ -397,6 +401,7 @@ func _on_set_all_notes_texture_file_dialog_file_selected(path):
 		track.apply_note_texture()
 #		track.set_note_texture()
 		track_number += 1
+	LivePreview.notify_global_variable_change("note_texture")
 
 func _on_effect_texture_button_pressed():
 	$%SetAllEffectsTextureFileDialog.show()
@@ -409,6 +414,7 @@ func _on_set_all_effects_texture_file_dialog_file_selected(path):
 		track.note_effect_texture = path
 		track.apply_note_effect_texture()
 		track_number += 1
+	LivePreview.notify_global_variable_change("note_effect_texture")
 
 
 func _on_reset_note_effect_texture_button_pressed():
@@ -420,6 +426,7 @@ func _on_reset_note_effect_texture_button_pressed():
 		track.apply_note_effect_texture()
 #		track.set_note_texture()
 		track_number += 1
+	LivePreview.notify_global_variable_change("note_effect_texture")
 
 func set_all_notes_left_margin():
 	var value = $MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer3/LeftMarginSlider.value
@@ -431,6 +438,8 @@ func set_all_notes_left_margin():
 		#GlobalVariables.save_settings()
 		track.apply_note_margins()
 		track_number += 1
+	
+	LivePreview.notify_global_variable_change("note_texture_margins")
 		
 
 func set_all_notes_right_margin():
@@ -443,6 +452,8 @@ func set_all_notes_right_margin():
 		#GlobalVariables.save_settings()
 		track.apply_note_margins()
 		track_number += 1
+	
+	LivePreview.notify_global_variable_change("note_texture_margins")
 
 
 func _on_export_video_file_selected(path):
@@ -452,7 +463,7 @@ func _on_export_video_file_selected(path):
 func _on_audio_offset_slider_value_changed(value):
 	GlobalVariables.audio_offset = value
 	#GlobalVariables.save_settings()
-	$%LivePreview.notify_global_variable_change("audio_offset", value)
+	LivePreview.notify_global_variable_change("audio_offset")
 
 
 func _on_note_length_slider_value_changed(value):
