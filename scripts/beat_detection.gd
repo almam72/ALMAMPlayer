@@ -28,6 +28,8 @@ var tempo = 500000
 var smf_data:SMF.SMFData = null
 var delay = 0.5
 
+var should_quit : bool = true
+
 func _ready():
 	var arguments = {}
 	for argument in OS.get_cmdline_user_args():
@@ -442,8 +444,11 @@ func create_note_effect(note_instance):
 
 
 func song_finished():
-	await get_tree().create_timer(1).timeout
-	get_tree().quit()
+	if should_quit:
+		await get_tree().create_timer(1).timeout
+		get_tree().quit()
+	else:
+		$AudioStreamPlayer2.play(0) # Start over again
 
 
 func compare_floats(a, b, epsilon = 0.01):

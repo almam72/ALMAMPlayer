@@ -6,6 +6,7 @@ var NoteEffectScene = preload("res://scenes/note_effect.tscn")
 
 func _ready():
 	# I think this is necessary so we don't run the base class's _ready
+	should_quit = false
 	print("oh i am *so* ready >:)")
 
 func _process(delta):
