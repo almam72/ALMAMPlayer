@@ -308,7 +308,7 @@ func _on_export_button_pressed():
 	GlobalVariables.save_settings()
 	$%ExportVideo.show()
 
-func _on_debug_button_pressed():
+func _on_reset_preview_button_pressed():
 	LivePreview.reset()
 
 func _on_h_slider_value_changed(value):

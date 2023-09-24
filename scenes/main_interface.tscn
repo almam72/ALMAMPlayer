@@ -398,11 +398,11 @@ size_flags_vertical = 10
 theme_override_font_sizes/font_size = 34
 text = "Export Video"
 
-[node name="Debug" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="ResetPreviewButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
-theme_override_font_sizes/font_size = 34
-text = "Debug"
+theme_override_font_sizes/font_size = 25
+text = "Reset Live Preview"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -618,7 +618,7 @@ filters = PackedStringArray("*.json")
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/HBoxContainer/AudioOffsetSlider" to="." method="_on_audio_offset_slider_value_changed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExportButton2" to="." method="_on_export_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Debug" to="." method="_on_debug_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ResetPreviewButton" to="." method="_on_reset_preview_button_pressed"]
 [connection signal="toggled" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer/SquareToggle" to="." method="_on_square_toggle_toggled"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer/VelocitySlider" to="." method="_on_velocity_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer/PitchBendSlider" to="." method="_on_pitch_bend_slider_value_changed"]
