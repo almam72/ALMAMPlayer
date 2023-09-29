@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c67cg0gwkl383"]
+[gd_scene load_steps=9 format=3 uid="uid://c67cg0gwkl383"]
 
 [ext_resource type="Theme" uid="uid://cfni7mm2mqusg" path="res://assets/main_interface.tres" id="1_7w4np"]
 [ext_resource type="Script" path="res://scripts/main_interface.gd" id="1_v86r2"]
-[ext_resource type="Texture2D" uid="uid://df6uqumd68lfc" path="res://assets/sprites/black.png" id="2_vb6hc"]
 [ext_resource type="Script" path="res://scripts/preview.gd" id="3_h8nuy"]
+[ext_resource type="Script" path="res://scripts/preview_interface.gd" id="5_6wx70"]
+[ext_resource type="PackedScene" uid="uid://bmil4knpx81j2" path="res://scenes/live_preview.tscn" id="5_ej8h7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bhba"]
 bg_color = Color(0.968627, 0.968627, 0.968627, 1)
@@ -18,7 +19,17 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_m0py4"]
+viewport_path = NodePath("MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture/PreviewViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_cjaje"]
+font_size = 28
+font_color = Color(0, 0, 0, 1)
+outline_size = 9
+outline_color = Color(0.980469, 0.730469, 0.347656, 1)
+
 [node name="Control" type="Control" groups=["MainInterface"]]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -199,53 +210,50 @@ size_flags_horizontal = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Background" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+[node name="LivePreviewInterface" type="MarginContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+script = ExtResource("5_6wx70")
+
+[node name="ViewportRenderTexture" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface"]
+layout_mode = 2
+texture = SubResource("ViewportTexture_m0py4")
+expand_mode = 5
+
+[node name="PreviewViewport" type="SubViewport" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="LivePreview" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/ViewportRenderTexture/PreviewViewport" instance=ExtResource("5_ej8h7")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(960, 540)
+process_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Pause" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer"]
+custom_minimum_size = Vector2(115, 56)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_vb6hc")
-expand_mode = 1
-stretch_mode = 6
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 34
+text = "Play"
 
-[node name="BottomMarginAnchor" type="Node2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background"]
-position = Vector2(0, 540)
+[node name="SeekTime" type="Label" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.980469, 0.730469, 0.347656, 1)
+text = "0:00"
+label_settings = SubResource("LabelSettings_cjaje")
 
-[node name="TopMargin" type="Line2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor"]
-unique_name_in_owner = true
-position = Vector2(0, -438)
-points = PackedVector2Array(0, 0, 960, 0)
-width = 24.0
-default_color = Color(0.980469, 0.730469, 0.347656, 1)
-
-[node name="Label" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor/TopMargin"]
-offset_left = 883.0
-offset_top = -17.0
-offset_right = 961.0
-offset_bottom = 25.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "1000"
-fit_content = true
-scroll_active = false
-
-[node name="BottomMargin" type="Line2D" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor"]
-unique_name_in_owner = true
-position = Vector2(0, -102)
-points = PackedVector2Array(0, 0, 407.941, 0, 960, 0)
-width = 24.0
-default_color = Color(0.980469, 0.730469, 0.347656, 1)
-
-[node name="Label" type="RichTextLabel" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/Background/BottomMarginAnchor/BottomMargin"]
-offset_left = 883.0
-offset_top = -17.0
-offset_right = 961.0
-offset_bottom = 25.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "1000"
-fit_content = true
-scroll_active = false
+[node name="SeekSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+step = 0.125
+scrollable = false
 
 [node name="Sizer" type="TextureRect" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(960, 0)
@@ -389,6 +397,12 @@ layout_mode = 2
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 34
 text = "Export Video"
+
+[node name="ResetPreviewButton" type="Button" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 25
+text = "Reset Live Preview"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -592,6 +606,10 @@ filters = PackedStringArray("*.json")
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer/ResetParallaxButton" to="." method="_on_reset_parallax_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2/ResetNoteTextureButton" to="." method="_on_reset_note_texture_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/VBoxContainer/VBoxContainer/HBoxContainer2/ResetNoteEffectTextureButton" to="." method="_on_reset_note_effect_texture_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer/Pause" to="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface" method="_on_pause_button_pressed"]
+[connection signal="drag_ended" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer/SeekSlider" to="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface" method="_on_seek_slider_drag_ended"]
+[connection signal="drag_started" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer/SeekSlider" to="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface" method="_on_seek_slider_drag_started"]
+[connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface/HBoxContainer/SeekSlider" to="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/LivePreviewInterface" method="_on_seek_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/SpeedSliderContainer/SpeedSlider" to="." method="_on_speed_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSpacingSliderContainer/NoteSpacingSlider" to="." method="_on_note_spacing_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/NoteSizeSliderContainer/NoteSizeSlider" to="." method="_on_note_size_slider_value_changed"]
@@ -600,6 +618,7 @@ filters = PackedStringArray("*.json")
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/AudioOffsetContainer/HBoxContainer/AudioOffsetSlider" to="." method="_on_audio_offset_slider_value_changed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PreviewButton" to="." method="_on_preview_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExportButton2" to="." method="_on_export_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ResetPreviewButton" to="." method="_on_reset_preview_button_pressed"]
 [connection signal="toggled" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SquareToggleContainer/SquareToggle" to="." method="_on_square_toggle_toggled"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/VelocitySliderContainer/VelocitySlider" to="." method="_on_velocity_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HSplitContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/PitchBendSliderContainer/PitchBendSlider" to="." method="_on_pitch_bend_slider_value_changed"]

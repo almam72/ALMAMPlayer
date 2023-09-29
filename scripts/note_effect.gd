@@ -75,8 +75,10 @@ func _on_Timer_timeout():
 	$AnimationPlayer.play("end")
 	await $AnimationPlayer.animation_finished
 #	yield($AnimationPlayer, "animation_finished")
-	hide()
-	queue_free()
+
+	# Removing below lines for live preview support
+	# hide()
+	# queue_free()
 
 func set_color():
 	if not GlobalVariables.dont_color[str(track_number)]:

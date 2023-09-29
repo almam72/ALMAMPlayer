@@ -40,71 +40,15 @@ func _ready():
 	set_parallax()
 	set_note_texture()
 	set_note_margins()
-	if not staccato:
-		texture_rext.size.y = texture_rext.texture.get_size().y
-		GlobalVariables.note_size = texture_rext.texture.get_size().y
-		texture_rext.position.y = GlobalVariables.note_size * -0.5
-	else:
-		staccato_texture.size.y = staccato_texture.texture.get_size().y
-		GlobalVariables.note_size = staccato_texture.texture.get_size().y
-		texture_rext.position.y = GlobalVariables.note_size * -0.5
-#	parallax *= 1.2
-#	z_index *= parallax
-
 	
-#	scale.y *= parallax / 190 + 10
-
-	
-#	$TextureRect.texture = load("res://assets/sprites/cat-png-clipart-6.png")
-#	rng.randomize()
-#	var texture = rng.randi_range(0,2)
-#	if texture == 0:
-#		$TextureRect.texture = load("res://assets/sprites/note00.png")
-#		$TextureRect2.texture = load("res://assets/sprites/note00.png")
-#	if texture == 1:
-#		$TextureRect.texture = load("res://assets/sprites/note01.png")
-#		$TextureRect2.texture = load("res://assets/sprites/note01.png")
-#	if texture == 2:
-#		$TextureRect.texture = load("res://assets/sprites/note02.png")
-#		$TextureRect2.texture = load("res://assets/sprites/note02.png")
-#	if GlobalVariables.audio_offset > 0.1:
-#		$TextureRect.material.set_shader_param("happy", true)
-#		$TextureRect.material.set_shader_param("speed", GlobalVariables.audio_offset)
-		
-	
-#	$ColorRect.margin_bottom *= parallax / 190 + 6
-#	$ColorRect2.margin_bottom = $ColorRect.margin_bottom / 1 + 3
-#	$ColorRect2.margin_top = $ColorRect2.margin_bottom -4
-	z_index += parallax 
-	texture_rext.modulate = color
-#	$ColorRect.modulate = color
-	texture_rext.modulate = Color(texture_rext.modulate.r + note_number / 600, texture_rext.modulate.g + note_number / 600, texture_rext.modulate.b + note_number / 600, 1)
-#	$ColorRect.modulate = Color($ColorRect.modulate.r + 0.2, $ColorRect.modulate.g + 0.2, $ColorRect.modulate.b + 0.2, 1)
 	position.y = 0
-#	print(note_number * GlobalVariables.note_size * GlobalVariables.note_spacing)
+	#	print(note_number * GlobalVariables.note_size * GlobalVariables.note_spacing)
 	position.y -= note_number * GlobalVariables.note_spacing
-	if not staccato:
-		texture_rext.size.x = duration * parallax
-	else:
-		texture_rext.size.x = staccato_texture.texture.get_size().x
-#	$TextureRect2.size.x = duration * parallax
-#	$ColorRect.margin_right = duration * parallax
-#	$ColorRect2.margin_right = duration * parallax
-#	$NoteTrail.position.x =  duration * parallax
-#	$NoteTrail.modulate = color
 	
-	if staccato:
-		duration = 0.1
-	if time > 0.075:
-		$Timer.wait_time = time - 0.03
-	else:
-		$Timer.wait_time = 0.06
-#	if time > 2.06:
-#		$StartTimer.wait_time = time - 2.06
-	if duration > 0:
-		$DurationTimer.wait_time = duration
-	else:
-		$DurationTimer.wait_time = 0.1
+	z_index += parallax 
+	set_note_texture_transform()
+
+	set_note_effect(time)
 #	global_position = Vector2(stepify(global_position.x, 1.0),stepify(global_position.y, 1.0))
 #	$StartTimer.start()
 	$Timer.start()
@@ -215,7 +159,11 @@ func set_parallax():
 	parallax = GlobalVariables.parallax[str(track_number)] * speed
 
 func set_color():
-	color = GlobalVariables.colors[str(track_number)]
+	const kNoColor = Color(1.0, 1.0, 1.0, 1.0)
+	if GlobalVariables.dont_color[str(track_number)]:
+		color = kNoColor
+	else:
+		color = GlobalVariables.colors[str(track_number)]
 
 func set_note_texture():
 	if staccato:
@@ -223,9 +171,80 @@ func set_note_texture():
 	else:
 		texture_rext.texture = GlobalVariables.note_images[str(track_number)]
 
+func set_note_texture_transform():
+	if not staccato:
+		texture_rext.size.y = texture_rext.texture.get_size().y
+		GlobalVariables.note_size = texture_rext.texture.get_size().y
+		texture_rext.position.y = GlobalVariables.note_size * -0.5
+	else:
+		staccato_texture.size.y = staccato_texture.texture.get_size().y
+		GlobalVariables.note_size = staccato_texture.texture.get_size().y
+		texture_rext.position.y = GlobalVariables.note_size * -0.5
+	#	parallax *= 1.2
+	#	z_index *= parallax
+
+		
+	#	scale.y *= parallax / 190 + 10
+
+		
+	#	$TextureRect.texture = load("res://assets/sprites/cat-png-clipart-6.png")
+	#	rng.randomize()
+	#	var texture = rng.randi_range(0,2)
+	#	if texture == 0:
+	#		$TextureRect.texture = load("res://assets/sprites/note00.png")
+	#		$TextureRect2.texture = load("res://assets/sprites/note00.png")
+	#	if texture == 1:
+	#		$TextureRect.texture = load("res://assets/sprites/note01.png")
+	#		$TextureRect2.texture = load("res://assets/sprites/note01.png")
+	#	if texture == 2:
+	#		$TextureRect.texture = load("res://assets/sprites/note02.png")
+	#		$TextureRect2.texture = load("res://assets/sprites/note02.png")
+	#	if GlobalVariables.audio_offset > 0.1:
+	#		$TextureRect.material.set_shader_param("happy", true)
+	#		$TextureRect.material.set_shader_param("speed", GlobalVariables.audio_offset)
+			
+		
+	#	$ColorRect.margin_bottom *= parallax / 190 + 6
+	#	$ColorRect2.margin_bottom = $ColorRect.margin_bottom / 1 + 3
+	#	$ColorRect2.margin_top = $ColorRect2.margin_bottom -4
+	texture_rext.modulate = color
+	#	$ColorRect.modulate = color
+	texture_rext.modulate = Color(texture_rext.modulate.r + note_number / 600, texture_rext.modulate.g + note_number / 600, texture_rext.modulate.b + note_number / 600, 1)
+	#	$ColorRect.modulate = Color($ColorRect.modulate.r + 0.2, $ColorRect.modulate.g + 0.2, $ColorRect.modulate.b + 0.2, 1)
+	if not staccato:
+		texture_rext.size.x = duration * parallax
+	else:
+		texture_rext.size.x = staccato_texture.texture.get_size().x
+	#	$TextureRect2.size.x = duration * parallax
+	#	$ColorRect.margin_right = duration * parallax
+	#	$ColorRect2.margin_right = duration * parallax
+	#	$NoteTrail.position.x =  duration * parallax
+	#	$NoteTrail.modulate = color
+
+
+
 func set_note_margins():
 	texture_rext.patch_margin_left = GlobalVariables.note_texture_margins[str(track_number)].x
 	texture_rext.patch_margin_right = GlobalVariables.note_texture_margins[str(track_number)].y
+
+## Updates note effects to play at about play_time seconds from now
+## Returns note effect start timer
+func set_note_effect(play_time):
+	if staccato:
+		duration = 0.1
+	if play_time > 0.075:
+		$Timer.wait_time = play_time - 0.03
+	else:
+		$Timer.wait_time = 0.06
+#	if time > 2.06:
+#		$StartTimer.wait_time = time - 2.06
+	if duration > 0:
+		$DurationTimer.wait_time = duration
+	else:
+		$DurationTimer.wait_time = 0.1
+	
+	playing = false
+	return $Timer
 
 func bend(value = 0):
 	bend_to = value * GlobalVariables.note_spacing * -4 * 0.0001 * GlobalVariables.pitch_bend_strength

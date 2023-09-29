@@ -8,6 +8,7 @@ var file_path
 var loaded_file = File.new()
 var notes = []
 var sorted_notes = []
+var note_instances = []
 var pitchbends = {}
 var dance_notes = {}
 var time_accuracy = 0.1
@@ -26,6 +27,8 @@ var ticks_per_beat = 0
 var tempo = 500000
 var smf_data:SMF.SMFData = null
 var delay = 0.5
+
+var should_quit : bool = true
 
 func _ready():
 	var arguments = {}
@@ -50,6 +53,7 @@ func _ready():
 	$AudioStreamPlayer2.set_stream(audio_loader.loadfile(GlobalVariables.sound_path))
 #	$AnimationPlayer.seek(0.3, true)
 	load_midi()
+	start()
 
 func load_midi():
 	smf_data = null
@@ -182,7 +186,6 @@ func load_midi():
 #	print(notes)
 	
 #	sorted_notes
-	start()
 	
 func sort_ascending(a, b):
 	if a[2] == b[2]:
@@ -348,13 +351,13 @@ func add_note_to_array(note, track_number, velocity = 1):
 #		var time = str(note["time"] + 0.5 + abs(GlobalVariables.audio_offset))
 #		if not notes.has(time):
 #			notes[time] = []
-		notes.append([note["midi"], note["duration"], note["time"], track_number, velocity])
+		notes.append([note["midi"], note["duration"], note["time"], track_number, velocity, null]) # null is note instance
 		
 	else:
 #		var time = str(note["time"] + 0.5)
 #		if not notes.has(time):
 #			notes[time] = []
-		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.audio_offset), track_number, velocity])
+		notes.append([note["midi"], note["duration"], note["time"] + abs(GlobalVariables.audio_offset), track_number, velocity, null])
 		
 #	var time = str(note["time"])
 	
@@ -413,6 +416,7 @@ func play_notes(note):
 					$WaveAnchor/NoteHolder.position.y = GlobalVariables.vertical_offset
 					get_node("WaveAnchor/NoteHolder/Track" + str(note[3])).add_child(note_instance)
 					unfinished_notes.erase(unfinished_note)
+					note_instances.append(note_instance)
 
 
 func play_note_effect(notes):
@@ -440,8 +444,11 @@ func create_note_effect(note_instance):
 
 
 func song_finished():
-	await get_tree().create_timer(1).timeout
-	get_tree().quit()
+	if should_quit:
+		await get_tree().create_timer(1).timeout
+		get_tree().quit()
+	else:
+		$AudioStreamPlayer2.play(0) # Start over again
 
 
 func compare_floats(a, b, epsilon = 0.01):
