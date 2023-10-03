@@ -113,6 +113,8 @@ func play_note_effect():
 	note_instance.set_note_texture()
 	note_instance.z_index = z_index + 1000
 	note_instance.global_position = global_position
+	await get_tree().create_timer(0.07).timeout
+	
 	note_instance.start()
 #	return
 #	if not preview:
