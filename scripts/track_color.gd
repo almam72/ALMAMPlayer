@@ -145,6 +145,8 @@ func set_effect_texture():
 		note_effect_preview.texture = default_effect_texture
 #		texture_rect.custom_minimum_size.x = 250
 #		texture_rect.custom_minimum_size.y = 18
+		main_interface.LivePreview.notify_global_variable_change("note_effect_texture")
+
 		return
 #	var image = Image.new()
 #	var err = image.load(GlobalVariables.note_effect_texture[str(number)])
@@ -244,15 +246,17 @@ func _on_note_effect_button_gui_input(event):
 
 func _on_color_picker_button_gui_input(event):
 	await get_tree().process_frame
+
 	if event is InputEventMouseButton and event.pressed:
 		match event.button_index:
 			MOUSE_BUTTON_RIGHT:
 				if main_interface.gradient_start == null:
 					main_interface.gradient_start = number
+#					$Container/GradientStart.scale = Vector2(0.635, 0.953)
 					var start_tween = get_tree().create_tween()
+					start_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 					start_tween.tween_property($Container/GradientStart, "scale", Vector2(0.635, 0.953), 0.1)
 #					$Container/GradientStart.visible = true
 				else:
 					main_interface.create_gradient(number)
-
-			
+	

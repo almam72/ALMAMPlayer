@@ -6,6 +6,21 @@
 [ext_resource type="Texture2D" uid="uid://dd3ddrigclglg" path="res://assets/sprites/note00.png" id="2_h8355"]
 [ext_resource type="Texture2D" uid="uid://d0npwtk8ndhgc" path="res://assets/sprites/note_effect_visibility.png" id="3_a1vf2"]
 
+[sub_resource type="Animation" id="Animation_hvmtr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(-2),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_kdb3w"]
 resource_name = "start"
 length = 0.250008
@@ -35,21 +50,6 @@ tracks/1/keys = {
 "values": [Vector2(0, 32), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_hvmtr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(-2),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1t4dh"]
 _data = {
 "RESET": SubResource("Animation_hvmtr"),
@@ -57,6 +57,7 @@ _data = {
 }
 
 [node name="TrackColor" type="VBoxContainer"]
+process_mode = 3
 modulate = Color(1, 1, 1, 0)
 offset_right = 916.0
 offset_bottom = 96.0
@@ -89,7 +90,7 @@ text_overrun_behavior = 3
 [node name="GradientStart" type="Sprite2D" parent="Container"]
 modulate = Color(1, 0, 0.133333, 1)
 position = Vector2(158, 31.5)
-scale = Vector2(1e-05, 1e-05)
+scale = Vector2(0.1, 0.1)
 texture = ExtResource("3_a1vf2")
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Container"]

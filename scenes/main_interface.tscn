@@ -38,6 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7w4np")
 script = ExtResource("1_v86r2")
+metadata/_edit_vertical_guides_ = []
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0

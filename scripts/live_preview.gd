@@ -75,6 +75,8 @@ func notify_global_variable_change(variable_name : String):
 			_update_note_texture_transforms()
 		"colors", "dont_color":
 			_update_note_colors()
+		"background_path":
+			_update_background_path()
 		"velocity_strength", "pitch_bend_strength":
 			pass # Don't need to so anything for these ones!
 		_:
@@ -157,3 +159,6 @@ func _update_note_effect_timers():
 		if horizon > 0:
 			var timer = note_instance.set_note_effect(horizon)
 			timer.start()
+
+func _update_background_path():
+	load_background_image(GlobalVariables.background_path)

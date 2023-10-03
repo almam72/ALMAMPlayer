@@ -105,7 +105,7 @@ func _on_load_song_file_dialog_files_selected(paths):
 #	$AudioStreamPlayer.set_stream(audio_loader.loadfile(file_path))
 #	$AudioStreamPlayer.play()
 
-func load_midi(midi_path):
+func load_midi(midi_path):	
 	smf_data = null
 	if self.smf_data == null:
 		var smf_reader: = SMF.new( )
@@ -246,8 +246,12 @@ var gradient_start = null
 func create_gradient(to_track):
 #	for track in color_container.get_children():
 #		track.apply_color()
+
+
 	var start_tween = get_tree().create_tween()
+	start_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	start_tween.tween_property(color_container.get_child(gradient_start).get_node("Container/GradientStart"), "scale", Vector2(0.0, 0.0), 0.5)
+#	color_container.get_child(gradient_start).get_node("Container/GradientStart").scale = Vector2(0.1,0.1)
 	GlobalVariables.save_settings()
 	var from_track = gradient_start
 	if from_track == to_track:
@@ -259,16 +263,23 @@ func create_gradient(to_track):
 		var from = from_track
 		from_track = to_track
 		to_track = from
-	var tracks_to_color = color_container.get_children().slice(from_track, to_track + 1)
+	var tracks_to_color = color_container.get_children().slice(from_track, to_track)
 	var number_of_tracks = to_track - from_track
-	var h_diff = wrapf((color_container.get_child(to_track).color.h - color_container.get_child(from_track).color.h), -0.5, 0.5) / number_of_tracks
+#	var h_diff = wrapf((color_container.get_child(to_track).color.h - color_container.get_child(from_track).color.h), -0.5, 0.5) / number_of_tracks
+	var h_diff = (color_container.get_child(to_track).color.h - color_container.get_child(from_track).color.h)
+#	print(h_diff)
+	if h_diff > 0.5:
+		h_diff = wrapf(h_diff, -0.5, 0.5)
+#		h_diff = (color_container.get_child(to_track).color.h - color_container.get_child(from_track).color.h)
+#	print("af" + str(h_diff))
+	
 	var s_diff = (color_container.get_child(to_track).color.s - color_container.get_child(from_track).color.s) / number_of_tracks
 	var v_diff = (color_container.get_child(to_track).color.v - color_container.get_child(from_track).color.v) / number_of_tracks
 #	print( color_container.get_child(from_track).color.h)
 	var i = 0
 	var starting_color = color_container.get_child(from_track).color
 	for track in tracks_to_color:
-		track.color.h = starting_color.h + h_diff * i
+		track.color.h = starting_color.h + (h_diff / number_of_tracks) * i
 		track.color.s = starting_color.s + s_diff * i
 		track.color.v = starting_color.v + v_diff * i
 		GlobalVariables.colors[str(from_track + i)] = track.color
@@ -276,7 +287,9 @@ func create_gradient(to_track):
 #		track.color = Color(starting_color.h + (h_diff * i), starting_color.s + (s_diff * i), starting_color.v + (v_diff * i))
 		i += 1
 		track.apply_color()
+		LivePreview.notify_global_variable_change("colors")
 		
+	
 	gradient_start = null
 
 	
@@ -298,6 +311,7 @@ func load_image(file):
 #	background.texture = ImageTexture.new()
 #	background.texture.create_from_image(image)
 	GlobalVariables.background_path = file
+	LivePreview.notify_global_variable_change("background_path")
 	#GlobalVariables.save_settings()
 
 func _on_preview_button_pressed():
@@ -329,6 +343,8 @@ func _on_vertical_offset_slider_value_changed(value):
 	GlobalVariables.vertical_offset = value
 	#GlobalVariables.save_settings()
 	LivePreview.notify_global_variable_change("vertical_offset")
+	LivePreview.notify_global_variable_change("top_margin")
+	
 	update_note_spacing()
 	
 
